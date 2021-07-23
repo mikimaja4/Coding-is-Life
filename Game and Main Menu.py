@@ -135,7 +135,7 @@ def start():
         draw_text('Pick a language', titleFont, (255, 255, 255), screen , screen.get_width()/2 -100, screen.get_height()/2)
         draw_text('Java', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 50)
         draw_text('Python', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 70)
-        draw_text('Quit', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 90)
+        draw_text('Back', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 90)
 
         mx, my = pygame.mouse.get_pos()
         startbutton_1 = pygame.Rect(screen.get_width() / 2, screen.get_height() / 2 + 50, 50, 10)
@@ -151,7 +151,7 @@ def start():
                 pythonGame()
         if startbutton_3.collidepoint((mx, my)):
             if click:
-                quit()
+                running = False
 
         click = False
 
