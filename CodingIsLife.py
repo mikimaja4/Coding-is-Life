@@ -1,7 +1,14 @@
 import pygame, spritesheet
 from pygame.locals import *
 from RenPyTools import label
+from bs4 import BeautifulSoup
 pygame.init()
+
+def soupTest():
+    soup = BeautifulSoup("<p>Some<b>bad<i>HTML")
+    print(soup.prettify())
+    xmlSoup = BeautifulSoup("<tag0>Some<tag1/>bad<tag2>XML", "xml")
+    print(soup.prettify())
 
 def draw_text(text, font, color, surface, x, y):
     textobj = font.render(text, 1, color)
