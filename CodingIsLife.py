@@ -1,3 +1,4 @@
+import arcade
 import pygame, spritesheet
 from pygame.locals import *
 from RenPyTools import label
@@ -104,14 +105,18 @@ def mainMenu(screen, background):
                 mx , my = pygame.mouse.get_pos()
                 #If the start button is clicked, switch the scene to the start menu and exit the main menu
                 if startButton.collidepoint((mx, my)):
+                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
+                    arcade.play_sound(arcade.load_sound('63774430.mp3'))
                     scene = "start"
                     return True
                 #If the options button is clicked, switch the scene to the options menu and exit the main menu
                 elif optionsButton.collidepoint((mx, my)):
+                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
                     scene = "options"
                     return True
                 #If the quit button is clicked close the program
                 elif quitButton.collidepoint((mx, my)):
+                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
                     quit()
 
 def start(screen, background):
@@ -140,16 +145,20 @@ def start(screen, background):
     for event in pygame.event.get():
         if event.type == KEYDOWN:
             if event.key == K_ESCAPE:
+                arcade.play_sound(arcade.load_sound('button-30.mp3'))
                 scene = mainMenu(screen)
         if event.type == MOUSEBUTTONDOWN:
             if event.button == 1:
                 if startbutton_1.collidepoint((mx, my)):
+                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
                     scene = "javaGame"
                     return True
                 if startbutton_2.collidepoint((mx, my)):
+                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
                     scene = "pythonGame"
                     return True
                 if startbutton_3.collidepoint((mx, my)):
+                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
                     quit()
         
 def options(screen, background):
