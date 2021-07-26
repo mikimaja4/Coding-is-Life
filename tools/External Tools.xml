@@ -1,0 +1,9 @@
+<toolSet name="External Tools">
+  <tool name="Run RenPy" showInMainMenu="false" showInEditor="false" showInProject="false" showInSearchPopup="false" disabled="false" useConsole="true" showConsoleOnStdOut="false" showConsoleOnStdErr="false" synchronizeAfterRun="true">
+    <exec>
+      <option name="COMMAND" value="C:\Users\Miranda\Desktop\renpy.exe" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/Desktop" />
+    </exec>
+  </tool>
+</toolSet>
