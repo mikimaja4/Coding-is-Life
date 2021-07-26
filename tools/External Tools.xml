@@ -3,7 +3,7 @@
     <exec>
       <option name="COMMAND" value="C:\Users\Miranda\Desktop\renpy.exe" />
       <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$USER_HOME$/Desktop" />
+      <option name="WORKING_DIRECTORY" value="C:/Users/Miranda/Desktop" />
     </exec>
   </tool>
 </toolSet>
