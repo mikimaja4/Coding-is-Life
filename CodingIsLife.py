@@ -1,7 +1,7 @@
 import arcade
 import pygame, spritesheet
 from pygame.locals import *
-from RenPyTools import label
+#from RenPyTools import label
 from bs4 import BeautifulSoup
 pygame.init()
 
@@ -106,7 +106,6 @@ def mainMenu(screen, background):
                 #If the start button is clicked, switch the scene to the start menu and exit the main menu
                 if startButton.collidepoint((mx, my)):
                     arcade.play_sound(arcade.load_sound('button-30.mp3'))
-                    arcade.play_sound(arcade.load_sound('63774430.mp3'))
                     scene = "start"
                     return True
                 #If the options button is clicked, switch the scene to the options menu and exit the main menu
@@ -134,12 +133,12 @@ def start(screen, background):
     draw_text('Pick a language', titleFont, (255, 255, 255), screen , screen.get_width()/2 -100, screen.get_height()/2)
     draw_text('Java', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 50)
     draw_text('Python', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 70)
-    draw_text('Quit', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 90)
+    draw_text('Back', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 90)
         
     mx, my = pygame.mouse.get_pos()
     startbutton_1 = pygame.Rect(screen.get_width() / 2, screen.get_height() / 2 + 50, 50, 10)
     startbutton_2 = pygame.Rect(screen.get_width() / 2, screen.get_height() / 2 + 70, 50, 10)
-    startbutton_3 = pygame.Rect(screen.get_width() / 2, screen.get_height() / 2 + 90, 50, 10)
+    backButton = pygame.Rect(screen.get_width() / 2, screen.get_height() / 2 + 90, 50, 10)
 
 
     for event in pygame.event.get():
@@ -157,9 +156,10 @@ def start(screen, background):
                     arcade.play_sound(arcade.load_sound('button-30.mp3'))
                     scene = "pythonGame"
                     return True
-                if startbutton_3.collidepoint((mx, my)):
+                if backButton.collidepoint((mx, my)):
                     arcade.play_sound(arcade.load_sound('button-30.mp3'))
-                    quit()
+                    scene = "mainMenu"
+                    return True
         
 def options(screen, background):
     global scene
@@ -172,17 +172,37 @@ def options(screen, background):
     
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
-
-    draw_text('options', font, (255, 255, 255), screen, screen.get_width()/2,screen.get_height()/2)
+    
+    draw_text('Options', titleFont, (255, 255, 255), screen , screen.get_width()/2 -100, screen.get_height()/2)
+    draw_text('Back', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 90)
+    
+    mx, my = pygame.mouse.get_pos()
+    backButton = pygame.Rect(screen.get_width() / 2, screen.get_height() / 2 + 90, 50, 10)
+                
     for event in pygame.event.get():
         if event.type == QUIT:
             quit()
         if event.type == KEYDOWN:
             if event.key == K_ESCAPE:
                 quit()
+        if event.type == MOUSEBUTTONDOWN:
+            if event.button == 1:
+                if backButton.collidepoint((mx, my)):
+                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
+                    scene = "mainMenu"
+                    return True
 
 def javaGame(screen, background):
     global scene
+    
+    font = pygame.font.SysFont(None, 20)
+    titleFont = pygame.font.SysFont(None, 50)
+    
+    draw_text('Back', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 90)
+    
+    mx, my = pygame.mouse.get_pos()
+    backButton = pygame.Rect(screen.get_width() / 2, screen.get_height() / 2 + 90, 50, 10)
+                
     #todo fill in the rest of the game
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -190,10 +210,38 @@ def javaGame(screen, background):
         if event.type == KEYDOWN:
             if event.key == K_ESCAPE:
                 quit()
+        if event.type == MOUSEBUTTONDOWN:
+            if event.button == 1:
+                if backButton.collidepoint((mx, my)):
+                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
+                    scene = "start"
+                    return True
 
 def pythonGame(screen, background):
     global scene, count
+    
+    font = pygame.font.SysFont(None, 20)
+    titleFont = pygame.font.SysFont(None, 50)
+    
+    draw_text('Back', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 90)
+    
+    mx, my = pygame.mouse.get_pos()
+    backButton = pygame.Rect(screen.get_width() / 2, screen.get_height() / 2 + 90, 50, 10)
+                
     #todo fill in the rest of the game
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            quit()
+        if event.type == KEYDOWN:
+            if event.key == K_ESCAPE:
+                quit()
+        if event.type == MOUSEBUTTONDOWN:
+            if event.button == 1:
+                if backButton.collidepoint((mx, my)):
+                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
+                    scene = "start"
+                    return True
+                
     #for event in pygame.event.get():
         #pass
                 
