@@ -82,6 +82,8 @@ def mainMenu(screen, background):
     global scene
     pygame.display.set_caption('Coding is Life')
     w, h = pygame.display.get_surface().get_size()
+    background = pygame.image.load('menuBackground.png')
+    background = pygame.transform.scale(background, (w, h))
 
     font = pygame.font.SysFont(None, 20)
     titleFont = pygame.font.SysFont(None, 50)
@@ -121,8 +123,9 @@ def mainMenu(screen, background):
 def start(screen, background):
     global scene
     w, h = pygame.display.get_surface().get_size()
-    fullscreen = False
     background = pygame.image.load('menuBackground.png')
+    background = pygame.transform.scale(background, (w, h))
+    fullscreen = False
     font = pygame.font.SysFont(None, 20)
     titleFont = pygame.font.SysFont(None, 50)
     background = pygame.transform.scale(background, (w, h))
@@ -164,11 +167,11 @@ def start(screen, background):
 def options(screen, background):
     global scene
     w, h = pygame.display.get_surface().get_size()
-    fullscreen = False
     background = pygame.image.load('menuBackground.png')
+    background = pygame.transform.scale(background, (w, h))
+    fullscreen = False
     font = pygame.font.SysFont(None, 20)
     titleFont = pygame.font.SysFont(None, 50)
-    background = pygame.transform.scale(background, (w, h))
     
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
@@ -194,6 +197,9 @@ def options(screen, background):
 
 def javaGame(screen, background):
     global scene
+    w, h = pygame.display.get_surface().get_size()
+    background = pygame.image.load('menuBackground.png')
+    background = pygame.transform.scale(background, (w, h))
     
     font = pygame.font.SysFont(None, 20)
     titleFont = pygame.font.SysFont(None, 50)
@@ -219,6 +225,9 @@ def javaGame(screen, background):
 
 def pythonGame(screen, background):
     global scene, count
+    w, h = pygame.display.get_surface().get_size()
+    background = pygame.image.load('menuBackground.png')
+    background = pygame.transform.scale(background, (w, h))
     
     font = pygame.font.SysFont(None, 20)
     titleFont = pygame.font.SysFont(None, 50)
