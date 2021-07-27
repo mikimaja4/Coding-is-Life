@@ -128,7 +128,6 @@ def start(screen, background):
     fullscreen = False
     font = pygame.font.SysFont(None, 20)
     titleFont = pygame.font.SysFont(None, 50)
-    background = pygame.transform.scale(background, (w, h))
     
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
