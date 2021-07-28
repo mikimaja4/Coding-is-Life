@@ -1,9 +1,12 @@
 import arcade
 import pygame, spritesheet
 from pygame.locals import *
+from tkinter import *
+from pygame import mixer
 # from RenPyTools import label
 from bs4 import BeautifulSoup
 
+root=Tk()
 pygame.init()
 
 
@@ -142,7 +145,8 @@ def pause():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_c:
                     paused = False
-
+                elif event.key == pygame.K_m:
+                    main()
                 elif event.key == pygame.K_q:
                     pygame.quit()
                     quit()
@@ -171,7 +175,7 @@ def mainMenu(screen, background):
     background = pygame.image.load('menuBackground.png')
     background = pygame.transform.scale(background, (w, h))
 
-    font = pygame.font.SysFont(None, 20)
+    font = pygame.font.SysFont(None, 30)
     titleFont = pygame.font.SysFont(None, 50)
 
     # Main Menu Background
@@ -179,16 +183,17 @@ def mainMenu(screen, background):
     # background = pygame.transform.scale(background, (w, h))
     screen.blit(background, (0, 0))
     draw_text('Coding is Life', titleFont, (255, 255, 255), screen, w / 2, h / 2 - 20)
-    draw_text('Start', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 40)
-    draw_text('Options', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 70)
-    draw_text('Quit', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 100)
+    draw_text('Start', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 25)
+    draw_text('Options', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 55)
+    draw_text('Quit', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 85)
 
-    startButton = pygame.Rect(0, 0, 100, 20)
-    startButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 40)
-    optionsButton = pygame.Rect(0, 0, 100, 20)
-    optionsButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 70)
-    quitButton = pygame.Rect(0, 0, 100, 20)
-    quitButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 100)
+
+    startButton = pygame.Rect(0, 0, 80, 25)
+    startButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 25)
+    optionsButton = pygame.Rect(0, 0, 100, 25)
+    optionsButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 55)
+    quitButton = pygame.Rect(0, 0, 100, 25)
+    quitButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 85)
 
     for event in pygame.event.get():
         if event.type == MOUSEBUTTONDOWN:
@@ -196,19 +201,25 @@ def mainMenu(screen, background):
                 mx, my = pygame.mouse.get_pos()
                 # If the start button is clicked, switch the scene to the start menu and exit the main menu
                 if startButton.collidepoint((mx, my)):
-                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
+                    mixer.music.load('button-30.mp3')
                     scene = "start"
                     return True
                 # If the options button is clicked, switch the scene to the options menu and exit the main menu
                 elif optionsButton.collidepoint((mx, my)):
-                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
+                    mixer.music.load('button-30.mp3')
                     scene = "options"
                     return True
                 # If the quit button is clicked close the program
                 elif quitButton.collidepoint((mx, my)):
-                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
+                    mixer.music.load('button-30.mp3')
                     quit()
-
+        if event.type == KEYDOWN:
+            if event.key == K_ESCAPE:
+                quit()
+    #pygame.draw.rect(screen,(2,0,0),startButton)
+    #pygame.draw.rect(screen, (225, 0, 0), optionsButton)
+    #pygame.draw.rect(screen, (5, 0, 0), quitButton)
+    #use this to test the side
 
 def start(screen, background):
     global scene
@@ -216,42 +227,42 @@ def start(screen, background):
     background = pygame.image.load('menuBackground.png')
     background = pygame.transform.scale(background, (w, h))
     fullscreen = False
-    font = pygame.font.SysFont(None, 20)
+    font = pygame.font.SysFont(None, 30)
     titleFont = pygame.font.SysFont(None, 50)
 
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
 
-    draw_text('Pick a language', titleFont, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2)
-    draw_text('Python', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 50)
-    draw_text('Java', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 70)
-    draw_text('Back', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 90)
+    draw_text('Pick a language', titleFont, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2-20)
+    draw_text('Python', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 25)
+    draw_text('Java', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 55)
+    draw_text('Back', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 85)
 
     mx, my = pygame.mouse.get_pos()
     pythonButton = pygame.Rect(0, 0, 50, 10)
-    pythonButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 50)
+    pythonButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 25)
     javaButton = pygame.Rect(0, 0, 50, 10)
-    javaButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 70)
+    javaButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 55)
     backButton = pygame.Rect(0, 0, 50, 10)
-    backButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 90)
+    backButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 85)
 
     for event in pygame.event.get():
         if event.type == KEYDOWN:
             if event.key == K_ESCAPE:
-                arcade.play_sound(arcade.load_sound('button-30.mp3'))
+                mixer.music.load('button-30.mp3')
                 scene = mainMenu(screen)
         if event.type == MOUSEBUTTONDOWN:
             if event.button == 1:
                 if pythonButton.collidepoint((mx, my)):
-                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
+                    mixer.music.load('button-30.mp3')
                     scene = "pythonGame"
                     return True
                 if javaButton.collidepoint((mx, my)):
-                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
+                    mixer.music.load('button-30.mp3')
                     scene = "javaGame"
                     return True
                 if backButton.collidepoint((mx, my)):
-                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
+                    mixer.music.load('button-30.mp3')
                     scene = "mainMenu"
                     return True
 
@@ -268,12 +279,19 @@ def options(screen, background):
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
 
+
+
     draw_text('Options', titleFont, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2)
     draw_text('Back', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 90)
 
     mx, my = pygame.mouse.get_pos()
     backButton = pygame.Rect(0, 0, 50, 10)
     backButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 90)
+
+    scale = Scale (root, from_ =0, to = 100, orient=HORIZONTAL, var= set_vol)
+    scale.pack(anchor=CENTER)
+    root.mainloop()
+    #todo make the scale look more appealing and also make it load on the same window as the game
 
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -284,7 +302,7 @@ def options(screen, background):
         if event.type == MOUSEBUTTONDOWN:
             if event.button == 1:
                 if backButton.collidepoint((mx, my)):
-                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
+                    mixer.music.load('button-30.mp3')
                     scene = "mainMenu"
                     return True
 
@@ -295,7 +313,7 @@ def pythonGame(screen, background):
     background = pygame.image.load('menuBackground.png')
     background = pygame.transform.scale(background, (w, h))
 
-    font = pygame.font.SysFont(None, 20)
+    font = pygame.font.SysFont(None, 30)
     titleFont = pygame.font.SysFont(None, 50)
 
     draw_text('Levels', titleFont, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 - 150)
@@ -303,11 +321,11 @@ def pythonGame(screen, background):
     for i in range(5):
         for j in range(2):
             draw_text('Level ' + str((i + 1) + (j * 5)), font, (255, 255, 255), screen,
-                      screen.get_width() / 2 - 50 + (j * 100), screen.get_height() / 2 - 110 + (i * 30))
+                      screen.get_width() / 2 - 50 + (j * 100), screen.get_height() / 2 - 85 + (i * 30))
             # Create the rectangle for click detection of the current level
             newButton = pygame.Rect(0, 0, 50, 10)
             # Center the button in the correct spot
-            newButton.center = (screen.get_width() / 2 + 50 - (j * 100), screen.get_height() / 2 - 110 + (i * 30))
+            newButton.center = (screen.get_width() / 2 + 50 - (j * 100), screen.get_height() / 2 - 85 + (i * 30))
             levelButtons.append(newButton)
 
     draw_text('Back', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 90)
@@ -324,7 +342,7 @@ def pythonGame(screen, background):
             if event.button == 1:
                 mx, my = pygame.mouse.get_pos()
                 if backButton.collidepoint((mx, my)):
-                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
+                    mixer.music.load('button-30.mp3')
                     scene = "start"
                     return True
                 # Check if any of the level buttons have been clicked
@@ -332,7 +350,7 @@ def pythonGame(screen, background):
                     game_background()
                     # Also need to check if the level has been unlocked yet
                     if levelButtons[i].collidepoint((mx, my)):
-                        arcade.play_sound(arcade.load_sound('button-30.mp3'))
+                        mixer.music.load('button-30.mp3')
                         scene = "battle"
                         language = "python"
                         level = i + 1
@@ -363,7 +381,7 @@ def javaGame(screen, background):
         if event.type == MOUSEBUTTONDOWN:
             if event.button == 1:
                 if backButton.collidepoint((mx, my)):
-                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
+                    mixer.music.load('button-30.mp3')
                     scene = "start"
                     return True
 
@@ -412,6 +430,20 @@ def cutscene():
     # Play a cutscene
     # Return to level select
 
+def play_music():
+    if scene=="mainMenu":
+        mixer.music.load('Music')
+    if language == "python" & level == 1:
+        mixer.music.load('music')
+    #do this for all levels or whatever has different audio
+
+def stop_music():
+    #arcade.stop?
+    pass
+
+def set_vol(value):
+    volume= int(value) / 100
+    mixer.music.set_volume(value)
 
 if __name__ == '__main__':
     # GLOBAL VARIABLES
@@ -423,9 +455,10 @@ if __name__ == '__main__':
     # Which level is being played, irrelevant if in a menu
     level = 0
     # max frames per second
-    fps = 60
+    fps = 120
     # number of frames elapsed
     count = 0
 
     main()
     quit()
+
