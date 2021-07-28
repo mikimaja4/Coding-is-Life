@@ -96,7 +96,6 @@ def game_background():
     menubutton = pygame.transform.scale(menubutton_img, (100, 50))
 
     running = True
-    click = False
 
     while running:
         clock.tick(fps)
@@ -107,9 +106,7 @@ def game_background():
 
         mx, my = pygame.mouse.get_pos()
         button_1 = pygame.Rect(SCREEN_WIDTH - 150, 0, 150, 100)
-        if button_1.collidepoint((mx, my)):
-            if click:
-                pause()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -117,7 +114,8 @@ def game_background():
                 if event.key == pygame.K_p:
                     pause()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                click = True
+                if button_1.collidepoint((mx, my)):
+                    pause()
 
         pygame.display.update()
 
