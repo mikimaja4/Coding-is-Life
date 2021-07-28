@@ -1,9 +1,12 @@
 import arcade
 import pygame, spritesheet
 from pygame.locals import *
+from tkinter import *
+from pygame import mixer
 # from RenPyTools import label
 from bs4 import BeautifulSoup
 
+root=Tk()
 pygame.init()
 
 
@@ -198,17 +201,17 @@ def mainMenu(screen, background):
                 mx, my = pygame.mouse.get_pos()
                 # If the start button is clicked, switch the scene to the start menu and exit the main menu
                 if startButton.collidepoint((mx, my)):
-                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
+                    mixer.music.load('button-30.mp3')
                     scene = "start"
                     return True
                 # If the options button is clicked, switch the scene to the options menu and exit the main menu
                 elif optionsButton.collidepoint((mx, my)):
-                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
+                    mixer.music.load('button-30.mp3')
                     scene = "options"
                     return True
                 # If the quit button is clicked close the program
                 elif quitButton.collidepoint((mx, my)):
-                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
+                    mixer.music.load('button-30.mp3')
                     quit()
         if event.type == KEYDOWN:
             if event.key == K_ESCAPE:
@@ -246,20 +249,20 @@ def start(screen, background):
     for event in pygame.event.get():
         if event.type == KEYDOWN:
             if event.key == K_ESCAPE:
-                arcade.play_sound(arcade.load_sound('button-30.mp3'))
+                mixer.music.load('button-30.mp3')
                 scene = mainMenu(screen)
         if event.type == MOUSEBUTTONDOWN:
             if event.button == 1:
                 if pythonButton.collidepoint((mx, my)):
-                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
+                    mixer.music.load('button-30.mp3')
                     scene = "pythonGame"
                     return True
                 if javaButton.collidepoint((mx, my)):
-                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
+                    mixer.music.load('button-30.mp3')
                     scene = "javaGame"
                     return True
                 if backButton.collidepoint((mx, my)):
-                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
+                    mixer.music.load('button-30.mp3')
                     scene = "mainMenu"
                     return True
 
@@ -276,12 +279,19 @@ def options(screen, background):
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
 
+
+
     draw_text('Options', titleFont, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2)
     draw_text('Back', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 90)
 
     mx, my = pygame.mouse.get_pos()
     backButton = pygame.Rect(0, 0, 50, 10)
     backButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 90)
+
+    scale = Scale (root, from_ =0, to = 0, orient=HORIZONTAL, var= set_vol)
+    scale.pack(anchor=CENTER)
+
+    #todo find out why the scale isnt loading on the page
 
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -292,7 +302,7 @@ def options(screen, background):
         if event.type == MOUSEBUTTONDOWN:
             if event.button == 1:
                 if backButton.collidepoint((mx, my)):
-                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
+                    mixer.music.load('button-30.mp3')
                     scene = "mainMenu"
                     return True
 
@@ -332,7 +342,7 @@ def pythonGame(screen, background):
             if event.button == 1:
                 mx, my = pygame.mouse.get_pos()
                 if backButton.collidepoint((mx, my)):
-                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
+                    mixer.music.load('button-30.mp3')
                     scene = "start"
                     return True
                 # Check if any of the level buttons have been clicked
@@ -340,7 +350,7 @@ def pythonGame(screen, background):
                     game_background()
                     # Also need to check if the level has been unlocked yet
                     if levelButtons[i].collidepoint((mx, my)):
-                        arcade.play_sound(arcade.load_sound('button-30.mp3'))
+                        mixer.music.load('button-30.mp3')
                         scene = "battle"
                         language = "python"
                         level = i + 1
@@ -371,7 +381,7 @@ def javaGame(screen, background):
         if event.type == MOUSEBUTTONDOWN:
             if event.button == 1:
                 if backButton.collidepoint((mx, my)):
-                    arcade.play_sound(arcade.load_sound('button-30.mp3'))
+                    mixer.music.load('button-30.mp3')
                     scene = "start"
                     return True
 
@@ -420,6 +430,20 @@ def cutscene():
     # Play a cutscene
     # Return to level select
 
+def play_music():
+    if scene=="mainMenu":
+        mixer.music.load('Music')
+    if language == "python" & level == 1:
+        mixer.music.load('music')
+    #do this for all levels or whatever has different audio
+
+def stop_music():
+    #arcade.stop?
+    pass
+
+def set_vol(value):
+    volume= int(value) / 100
+    mixer.music.set_volume(value)
 
 if __name__ == '__main__':
     # GLOBAL VARIABLES
@@ -437,3 +461,5 @@ if __name__ == '__main__':
 
     main()
     quit()
+
+    root.mainloop()
