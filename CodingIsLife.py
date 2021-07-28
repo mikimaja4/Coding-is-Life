@@ -291,7 +291,7 @@ def options(screen, background):
     scale = Scale (root, from_ =0, to = 100, orient=HORIZONTAL, var= set_vol)
     scale.pack(anchor=CENTER)
     root.mainloop()
-    #todo find out why the scale isnt loading on the page
+    #todo make the scale look more appealing and also make it load on the same window as the game
 
     for event in pygame.event.get():
         if event.type == QUIT:
