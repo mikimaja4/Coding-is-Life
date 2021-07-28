@@ -385,7 +385,7 @@ def javaGame(screen, background):
                     scene = "start"
                     return True
 
-
+# testing
 def battle(screen, level, player, enemyList, questionList, backgroundList):
     global scene
     screen.fill((50, 50, 50))
