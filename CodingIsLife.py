@@ -185,11 +185,11 @@ def mainMenu(screen, background):
     draw_text('Quit', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 85)
 
 
-    startButton = pygame.Rect(0, 0, 80, 20)
+    startButton = pygame.Rect(0, 0, 80, 25)
     startButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 25)
-    optionsButton = pygame.Rect(0, 0, 100, 20)
+    optionsButton = pygame.Rect(0, 0, 100, 25)
     optionsButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 55)
-    quitButton = pygame.Rect(0, 0, 100, 20)
+    quitButton = pygame.Rect(0, 0, 100, 25)
     quitButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 85)
 
     for event in pygame.event.get():
@@ -210,7 +210,12 @@ def mainMenu(screen, background):
                 elif quitButton.collidepoint((mx, my)):
                     arcade.play_sound(arcade.load_sound('button-30.mp3'))
                     quit()
+        if event.type == KEYDOWN:
+            if event.key == K_ESCAPE:
+                quit()
     #pygame.draw.rect(screen,(2,0,0),startButton)
+    #pygame.draw.rect(screen, (225, 0, 0), optionsButton)
+    #pygame.draw.rect(screen, (5, 0, 0), quitButton)
     #use this to test the side
 
 def start(screen, background):
@@ -426,7 +431,7 @@ if __name__ == '__main__':
     # Which level is being played, irrelevant if in a menu
     level = 0
     # max frames per second
-    fps = 60
+    fps = 120
     # number of frames elapsed
     count = 0
 
