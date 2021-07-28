@@ -288,9 +288,9 @@ def options(screen, background):
     backButton = pygame.Rect(0, 0, 50, 10)
     backButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 90)
 
-    scale = Scale (root, from_ =0, to = 0, orient=HORIZONTAL, var= set_vol)
+    scale = Scale (root, from_ =0, to = 100, orient=HORIZONTAL, var= set_vol)
     scale.pack(anchor=CENTER)
-
+    root.mainloop()
     #todo find out why the scale isnt loading on the page
 
     for event in pygame.event.get():
@@ -462,4 +462,3 @@ if __name__ == '__main__':
     main()
     quit()
 
-    root.mainloop()
