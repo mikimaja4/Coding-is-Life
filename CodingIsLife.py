@@ -1,10 +1,19 @@
 import arcade
 import pygame, spritesheet
+import os
 from pygame.locals import *
 from tkinter import *
 from pygame import mixer
 # from RenPyTools import label
 from bs4 import BeautifulSoup
+from screeninfo import get_monitors
+
+monitors = get_monitors() # Get the resolution of all of the users monitors
+screen_width = monitors[0].width # Get width of first monitor found
+screen_height = monitors[0].height # Get height of first monitor found
+pos_x = screen_width/2 - 800 # Calculate the x-location
+pos_y = screen_height/2 - 450 # Calculate the y-location
+os.environ['SDL_VIDEO_WINDOW_POS'] = '%i,%i' % (pos_x,pos_y) # Set pygame window location
 
 root=Tk()
 pygame.init()
