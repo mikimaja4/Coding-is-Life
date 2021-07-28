@@ -182,6 +182,15 @@ def mainMenu(screen, background):
     background = pygame.image.load('menuBackground.png')
     background = pygame.transform.scale(background, (w, h))
 
+    quitButtonUI = pygame.image.load('images/SmallEmptyButton.png')
+    quitButtonIcon = pygame.transform.scale(quitButtonUI, (100, 50))
+
+    #quitButtonUI = pygame.transform.scale(quitButtonUI, (w, h))
+    #quitButtonUI = pygame.image.load('ExitButton.png').convert_alpha()
+    #quitButtonUI_rect = quitButtonUI.get_rect()
+    #quitButtonUI_rect.x=screen.get_width() / 2
+    #quitButtonUI_rect.y=screen.get_height() / 2 + 85
+
     font = pygame.font.SysFont(None, 30)
     titleFont = pygame.font.SysFont(None, 50)
 
@@ -236,6 +245,8 @@ def start(screen, background):
     fullscreen = False
     font = pygame.font.SysFont(None, 30)
     titleFont = pygame.font.SysFont(None, 50)
+
+
 
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
