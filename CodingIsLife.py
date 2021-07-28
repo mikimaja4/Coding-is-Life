@@ -273,7 +273,7 @@ def options(screen, background):
     background = pygame.image.load('menuBackground.png')
     background = pygame.transform.scale(background, (w, h))
     fullscreen = False
-    font = pygame.font.SysFont(None, 20)
+    font = pygame.font.SysFont(None, 30)
     titleFont = pygame.font.SysFont(None, 50)
 
     screen.fill((0, 0, 0))
@@ -281,16 +281,21 @@ def options(screen, background):
 
 
 
-    draw_text('Options', titleFont, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2)
-    draw_text('Back', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 90)
+    draw_text('Options', titleFont, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 -100)
+    draw_text('Music', font, (255, 255, 255), screen, screen.get_width() / 2 -110, screen.get_height() / 2 -50)
+    draw_text('Sound Fx', font, (255, 255, 255), screen, screen.get_width() / 2 -125, screen.get_height() / 2 -10)
+    draw_text('Refresh Rate', font, (255, 255, 255), screen, screen.get_width() / 2 -140, screen.get_height() / 2 +30)
+    draw_text('Back', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 120)
 
     mx, my = pygame.mouse.get_pos()
-    backButton = pygame.Rect(0, 0, 50, 10)
-    backButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 90)
+    backButton = pygame.Rect(0, 0, 50, 30)
+    backButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 120)
 
-    scale = Scale (root, from_ =0, to = 100, orient=HORIZONTAL, var= set_vol)
-    scale.pack(anchor=CENTER)
-    root.mainloop()
+    #pygame.draw.rect(screen, (5, 0, 0), backButton)
+
+    #scale = Scale (root, from_ =0, to = 100, orient=HORIZONTAL, var= set_vol)
+   # scale.pack(anchor=CENTER)
+    #root.mainloop()
     #todo make the scale look more appealing and also make it load on the same window as the game
 
     for event in pygame.event.get():
@@ -312,6 +317,8 @@ def pythonGame(screen, background):
     w, h = pygame.display.get_surface().get_size()
     background = pygame.image.load('menuBackground.png')
     background = pygame.transform.scale(background, (w, h))
+    screen.fill((0, 0, 0))
+    screen.blit(background, (0, 0))
 
     font = pygame.font.SysFont(None, 30)
     titleFont = pygame.font.SysFont(None, 50)
