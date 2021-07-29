@@ -4,6 +4,7 @@ import os
 from pygame.locals import *
 from tkinter import *
 from pygame import mixer
+import button
 # from RenPyTools import label
 from bs4 import BeautifulSoup
 from screeninfo import get_monitors
@@ -182,22 +183,22 @@ def mainMenu(screen, background):
     background = pygame.image.load('menuBackground.png')
     background = pygame.transform.scale(background, (w, h))
 
-    quitButtonUI = pygame.image.load('images/SmallEmptyButton.png')
-    quitButtonIcon = pygame.transform.scale(quitButtonUI, (100, 50))
+    #Testing exit button
+    #Todo figure out why the button image wont load... or why it breaks the program
+    exit_img= pygame.image.load('images/button/exit.png').convert_alpha()
+    exit_button = button.Button(screen.get_width() / 2, screen.get_height() / 2 + 85, exit_img, 0.2)
+    #pygame.draw.rect(screen, (2, 0, 0), exit_button)
+    #screen.blit(exit_button, (screen.get_width() / 2, screen.get_height() / 2 + 85))
 
+    #quitButtonUI = pygame.image.load('images/SmallEmptyButton.png')
+    #quitButtonIcon = pygame.transform.scale(quitButtonUI, (100, 50))
 
-    #quitButtonUI = pygame.transform.scale(quitButtonUI, (w, h))
-    #quitButtonUI = pygame.image.load('ExitButton.png').convert_alpha()
-    #quitButtonUI_rect = quitButtonUI.get_rect()
-    #quitButtonUI_rect.x=screen.get_width() / 2
-    #quitButtonUI_rect.y=screen.get_height() / 2 + 85
 
     font = pygame.font.SysFont(None, 30)
     titleFont = pygame.font.SysFont(None, 50)
 
     # Main Menu Background
-    # background = pygame.image.load('menuBackground.png')
-    # background = pygame.transform.scale(background, (w, h))
+
     screen.blit(background, (0, 0))
     draw_text('Coding is Life', titleFont, (255, 255, 255), screen, w / 2, h / 2 - 20)
     draw_text('Start', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 25)
@@ -233,7 +234,8 @@ def mainMenu(screen, background):
         if event.type == KEYDOWN:
             if event.key == K_ESCAPE:
                 quit()
-    #pygame.draw.rect(screen,(2,0,0),startButton)
+
+    #pygame.draw.rect(screen,(2,0,0),exit_button)
     #pygame.draw.rect(screen, (225, 0, 0), optionsButton)
     #pygame.draw.rect(screen, (5, 0, 0), quitButton)
     #use this to test the side
@@ -295,6 +297,8 @@ def options(screen, background):
     font = pygame.font.SysFont(None, 30)
     titleFont = pygame.font.SysFont(None, 50)
 
+
+
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
 
@@ -310,28 +314,13 @@ def options(screen, background):
     backButton = pygame.Rect(0, 0, 50, 30)
     backButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 120)
 
-    a = 0
-    size_of_gas_cloud = 30
 
-    while True:
-
-        if pygame.mouse.get_pressed()[0] != 0:
-            # collision detection also needed here
-            a = pygame.mouse.get_pos()[0] - 5
-            if a < 0:
-                a = 0
-
-        size_of_gas_cloud += a
-
-        pygame.draw.rect(screen, (2, 0, 0), Rect(screen.get_width() / 2 -50, screen.get_height() / 2 -60, 110, 30 ))
-        pygame.draw.rect(screen, (225, 0, 0), Rect(screen.get_width() / 2 -50, screen.get_height() / 2 -60, 100,20 ))
-        pygame.display.update()
 
     #pygame.draw.rect(screen, (5, 0, 0), backButton)
 
-    #scale = Scale (root, from_ =0, to = 100, orient=HORIZONTAL, var= set_vol)
-   # scale.pack(anchor=CENTER)
-    #root.mainloop()
+    scale = Scale (root, from_ =0, to = 100, orient=HORIZONTAL, var= set_vol)
+    scale.pack(anchor=CENTER)
+    root.mainloop()
     #todo make the scale look more appealing and also make it load on the same window as the game
 
     for event in pygame.event.get():
@@ -411,8 +400,8 @@ def javaGame(screen, background):
     draw_text('Back', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 90)
 
     mx, my = pygame.mouse.get_pos()
-    backButton = pygame.Rect(0, 0, 50, 10)
-    backButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 90)
+    backButton = pygame.Rect(0, 0, 50, 30)
+    backButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 120)
 
     # todo fill in the rest of the game
     for event in pygame.event.get():
