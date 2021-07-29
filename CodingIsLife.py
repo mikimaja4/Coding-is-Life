@@ -4,6 +4,12 @@ import os
 #import pyrebase
 from pygame.locals import *
 from tkinter import *
+from kivy.clock import Clock
+from kivy.core.audio import SoundLoader
+from kivy.properties import ObjectProperty
+from kivymd.app import MDApp
+from kivymd.uix.screen import Screen
+from kivymd.uix.slider import MDSlider
 from pygame import mixer
 import button
 # from RenPyTools import label
