@@ -185,6 +185,7 @@ def mainMenu(screen, background):
     quitButtonUI = pygame.image.load('images/SmallEmptyButton.png')
     quitButtonIcon = pygame.transform.scale(quitButtonUI, (100, 50))
 
+
     #quitButtonUI = pygame.transform.scale(quitButtonUI, (w, h))
     #quitButtonUI = pygame.image.load('ExitButton.png').convert_alpha()
     #quitButtonUI_rect = quitButtonUI.get_rect()
@@ -308,6 +309,23 @@ def options(screen, background):
     mx, my = pygame.mouse.get_pos()
     backButton = pygame.Rect(0, 0, 50, 30)
     backButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 120)
+
+    a = 0
+    size_of_gas_cloud = 30
+
+    while True:
+
+        if pygame.mouse.get_pressed()[0] != 0:
+            # collision detection also needed here
+            a = pygame.mouse.get_pos()[0] - 5
+            if a < 0:
+                a = 0
+
+        size_of_gas_cloud += a
+
+        pygame.draw.rect(screen, (2, 0, 0), Rect(screen.get_width() / 2 -50, screen.get_height() / 2 -60, 110, 30 ))
+        pygame.draw.rect(screen, (225, 0, 0), Rect(screen.get_width() / 2 -50, screen.get_height() / 2 -60, 100,20 ))
+        pygame.display.update()
 
     #pygame.draw.rect(screen, (5, 0, 0), backButton)
 
