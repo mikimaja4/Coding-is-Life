@@ -1,6 +1,7 @@
 import arcade
 import pygame, spritesheet
 import os
+#import pyrebase
 from pygame.locals import *
 from tkinter import *
 from pygame import mixer
@@ -8,6 +9,21 @@ import button
 # from RenPyTools import label
 from bs4 import BeautifulSoup
 from screeninfo import get_monitors
+
+#firebaseConfig={
+#    'apiKey': "AIzaSyCuxC-0j2O56CPFFxItN0T4ceBBk1Tlx0A",
+#    'authDomain': "mikimaja4.firebaseapp.com",
+#    'projectId': "mikimaja4",
+#    'storageBucket': "mikimaja4.appspot.com",
+#    'messagingSenderId': "830412228972",
+#    'appId': "1:830412228972:web:749ba573958dea2018cb49",
+#    'measurementId': "G-MYYGZFD8GT"
+#}
+#firebase = pyrebase.initialize_app(firebaseConfig)
+
+#db = firebase.database()
+#auth = firebase.auth()
+#storage = firebase.storage()
 
 monitors = get_monitors() # Get the resolution of all of the users monitors
 screen_width = monitors[0].width # Get width of first monitor found
