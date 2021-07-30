@@ -1,5 +1,5 @@
 import os, pygame, arcade, spritesheet, button, time
-from tkinter import *
+#from tkinter import *
 #import pyrebase
 from pygame.locals import *
 #from kivy.clock import Clock
@@ -26,6 +26,7 @@ from screeninfo import get_monitors
 #db = firebase.database()
 #auth = firebase.auth()
 #storage = firebase.storage()
+import dropDown
 
 monitors = get_monitors() # Get the resolution of all of the users monitors
 screen_width = monitors[0].width # Get width of first monitor found
@@ -34,7 +35,7 @@ pos_x = screen_width/2 - 800 # Calculate the x-location
 pos_y = screen_height/2 - 450 # Calculate the y-location
 os.environ['SDL_VIDEO_WINDOW_POS'] = '%i,%i' % (pos_x,pos_y) # Set pygame window location
 
-root=Tk()
+#root=Tk()
 pygame.init()
 
 #Use pygame.mixer to play the input sound. **USE .wav**
@@ -315,12 +316,8 @@ def options(screen, background):
     font = pygame.font.SysFont(None, 30)
     titleFont = pygame.font.SysFont(None, 50)
 
-
-
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
-
-
 
     draw_text('Options', titleFont, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 -100)
     draw_text('Music', font, (255, 255, 255), screen, screen.get_width() / 2 -110, screen.get_height() / 2 -50)
@@ -332,27 +329,63 @@ def options(screen, background):
     backButton = pygame.Rect(0, 0, 50, 30)
     backButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 120)
 
+    COLOR_INACTIVE = (84, 166, 55)
+    COLOR_ACTIVE = (137, 230, 102)
+    COLOR_LIST_INACTIVE = (255, 255, 255)
+    COLOR_LIST_ACTIVE = (137, 230, 102)
+
+    list1 = dropDown.DropDown(
+        [COLOR_INACTIVE, COLOR_ACTIVE],
+        [COLOR_LIST_INACTIVE, COLOR_LIST_ACTIVE],
+        screen.get_width() / 2 -40, screen.get_height() / 2 +17, 100, 20,
+        pygame.font.SysFont(None, 30),
+        "FPS", ["60", "75","120","144","240"])
+    run=True
+    clock = pygame.time.Clock()
+    while run:
+        clock.tick(120)
+
+        event_list = pygame.event.get()
+        for event in event_list:
+            if event.type == pygame.QUIT:
+                run = False
+
+        selected_option = list1.update(event_list)
+        if selected_option >= 0:
+            list1.main = list1.options[selected_option]
+            if selected_option == 0:
+                run=False
+
+        list1.draw(screen)
+        pygame.display.flip()
+    #todo Fix the dropdown menu to stop displaying once the new FPS is selected
+    #todo link the FPS to the actual game FPS once selected
 
 
     #pygame.draw.rect(screen, (5, 0, 0), backButton)
 
-    scale = Scale (root, from_ =0, to = 100, orient=HORIZONTAL, var= set_vol)
-    scale.pack(anchor=CENTER)
-    root.mainloop()
+    #scale = Scale (root, from_ =0, to = 100, orient=HORIZONTAL, var= set_vol)
+    #scale.pack(anchor=CENTER)
+    #root.mainloop()
     #todo make the scale look more appealing and also make it load on the same window as the game
-
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            quit()
-        if event.type == KEYDOWN:
-            if event.key == K_ESCAPE:
+        event_list = pygame.event.get()
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                run=False
                 quit()
-        if event.type == MOUSEBUTTONDOWN:
-            if event.button == 1:
-                if backButton.collidepoint((mx, my)):
-                    play('buttonClick.wav', 0.5)
-                    scene = "mainMenu"
-                    return True
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    quit()
+                    run=False
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    if backButton.collidepoint((mx, my)):
+                        play('buttonClick.wav', 0.5)
+                        run = False
+                        scene = "mainMenu"
+                        return True
+
+
 
 
 def pythonGame(screen, background):
