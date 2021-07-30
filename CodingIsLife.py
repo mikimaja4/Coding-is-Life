@@ -237,17 +237,17 @@ def mainMenu(screen, background):
                 mx, my = pygame.mouse.get_pos()
                 # If the start button is clicked, switch the scene to the start menu and exit the main menu
                 if startButton.collidepoint((mx, my)):
-                    play('button-30.wav', 0.5)
+                    play('buttonClick.wav', 0.5)
                     scene = "start"
                     return True
                 # If the options button is clicked, switch the scene to the options menu and exit the main menu
                 elif optionsButton.collidepoint((mx, my)):
-                    play('button-30.wav', 0.5)
+                    play('buttonClick.wav', 0.5)
                     scene = "options"
                     return True
                 # If the quit button is clicked close the program
                 elif quitButton.collidepoint((mx, my)):
-                    play('button-30.wav', 0.5)
+                    play('buttonClick.wav', 0.5)
                     quit()
         if event.type == KEYDOWN:
             if event.key == K_ESCAPE:
@@ -288,20 +288,20 @@ def start(screen, background):
     for event in pygame.event.get():
         if event.type == KEYDOWN:
             if event.key == K_ESCAPE:
-                play('button-30.wav', 0.5)
+                play('buttonClick.wav', 0.5)
                 scene = mainMenu(screen)
         if event.type == MOUSEBUTTONDOWN:
             if event.button == 1:
                 if pythonButton.collidepoint((mx, my)):
-                    play('button-30.wav', 0.5)
+                    play('buttonClick.wav', 0.5)
                     scene = "pythonGame"
                     return True
                 if javaButton.collidepoint((mx, my)):
-                    play('button-30.wav', 0.5)
+                    play('buttonClick.wav', 0.5)
                     scene = "javaGame"
                     return True
                 if backButton.collidepoint((mx, my)):
-                    play('button-30.wav', 0.5)
+                    play('buttonClick.wav', 0.5)
                     scene = "mainMenu"
                     return True
 
@@ -350,7 +350,7 @@ def options(screen, background):
         if event.type == MOUSEBUTTONDOWN:
             if event.button == 1:
                 if backButton.collidepoint((mx, my)):
-                    play('button-30.wav', 0.5)
+                    play('buttonClick.wav', 0.5)
                     scene = "mainMenu"
                     return True
 
@@ -392,7 +392,7 @@ def pythonGame(screen, background):
             if event.button == 1:
                 mx, my = pygame.mouse.get_pos()
                 if backButton.collidepoint((mx, my)):
-                    play('button-30.wav', 0.5)
+                    play('buttonClick.wav', 0.5)
                     scene = "start"
                     return True
                 # Check if any of the level buttons have been clicked
@@ -400,7 +400,7 @@ def pythonGame(screen, background):
                     game_background()
                     # Also need to check if the level has been unlocked yet
                     if levelButtons[i].collidepoint((mx, my)):
-                        play('button-30.wav', 0.5)
+                        play('buttonClick.wav', 0.5)
                         scene = "battle"
                         language = "python"
                         level = i + 1
@@ -431,7 +431,7 @@ def javaGame(screen, background):
         if event.type == MOUSEBUTTONDOWN:
             if event.button == 1:
                 if backButton.collidepoint((mx, my)):
-                    play('button-30.wav', 0.5)
+                    play('buttonClick.wav', 0.5)
                     scene = "start"
                     return True
 
