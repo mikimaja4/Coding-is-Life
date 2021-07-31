@@ -9,7 +9,6 @@ from pygame.locals import *
 #from kivymd.uix.screen import Screen
 #from kivymd.uix.slider import MDSlider
 #from pygame import mixer
-# from RenPyTools import label
 from screeninfo import get_monitors
 
 #firebaseConfig={
@@ -343,12 +342,23 @@ def options(screen, background):
     run=True
     clock = pygame.time.Clock()
     while run:
-        clock.tick(120)
+        clock.tick(30)
 
         event_list = pygame.event.get()
         for event in event_list:
             if event.type == pygame.QUIT:
                 run = False
+            if event.type == QUIT:
+                quit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    quit()
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    if backButton.collidepoint((mx, my)):
+                        play('buttonClick.wav', 0.5)
+                        scene = "mainMenu"
+                        return True
 
         selected_option = list1.update(event_list)
         if selected_option >= 0:
@@ -358,6 +368,7 @@ def options(screen, background):
 
         list1.draw(screen)
         pygame.display.flip()
+
     #todo Fix the dropdown menu to stop displaying once the new FPS is selected
     #todo link the FPS to the actual game FPS once selected
 
@@ -368,22 +379,7 @@ def options(screen, background):
     #scale.pack(anchor=CENTER)
     #root.mainloop()
     #todo make the scale look more appealing and also make it load on the same window as the game
-        event_list = pygame.event.get()
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                run=False
-                quit()
-            if event.type == KEYDOWN:
-                if event.key == K_ESCAPE:
-                    quit()
-                    run=False
-            if event.type == MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    if backButton.collidepoint((mx, my)):
-                        play('buttonClick.wav', 0.5)
-                        run = False
-                        scene = "mainMenu"
-                        return True
+
 
 
 
