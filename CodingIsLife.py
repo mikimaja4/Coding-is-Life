@@ -161,8 +161,27 @@ def pause():
     message_img = pygame.image.load('images/message.png')
     message = pygame.transform.scale(message_img, (1000, 300))
 
+    play_img = pygame.image.load('images/PlayButton.png')
+    play = pygame.transform.scale(play_img, (350, 150))
+
+    exit_img = pygame.image.load('images/ExitButton.png')
+    exit = pygame.transform.scale(exit_img, (350, 150))
+
+    menu_img = pygame.image.load('images/MenuButton.png')
+    menu = pygame.transform.scale(menu_img, (350, 150))
+
+    button_play = pygame.Rect(SCREEN_WIDTH - 150, 0, 150, 100)
+    button_menu = pygame.Rect(SCREEN_WIDTH - 150, 0, 150, 100)
+    button_exit = pygame.Rect(SCREEN_WIDTH - 150, 0, 150, 100)
+
     paused = True
     while paused:
+
+        button_play_collide = pygame.Rect(SCREEN_WIDTH / 2 - 575, SCREEN_HEIGHT / 2 - 75, 350, 150)
+        button_menu_collide = pygame.Rect(SCREEN_WIDTH / 2 - 175, SCREEN_HEIGHT / 2 - 75, 350, 150)
+        button_exit_collide = pygame.Rect(SCREEN_WIDTH / 2 + 225, SCREEN_HEIGHT / 2 - 75, 350, 150)
+        mx, my = pygame.mouse.get_pos()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -176,9 +195,23 @@ def pause():
                 elif event.key == pygame.K_q:
                     pygame.quit()
                     quit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if button_play_collide.collidepoint((mx, my)):
+                    game_background()
+                if button_menu_collide.collidepoint((mx, my)):
+                    #screen = pygame.display.set_mode([500, 500], RESIZABLE)
+                    #mainMenu(pygame.display.set_mode([500, 500], RESIZABLE), background_img)
+                    main()
+                if button_exit_collide.collidepoint((mx, my)):
+                    quit()
 
         screen.blit(background, (0, 0))
-        screen.blit(message, (SCREEN_WIDTH / 2 - 500, SCREEN_HEIGHT / 2 - 150))
+        #screen.blit(message, (SCREEN_WIDTH / 2 - 500, SCREEN_HEIGHT / 2 - 350))
+
+        screen.blit(play, (SCREEN_WIDTH / 2 - 575, SCREEN_HEIGHT / 2 - 75))
+        screen.blit(menu, (SCREEN_WIDTH / 2 - 175, SCREEN_HEIGHT / 2 - 75))
+        screen.blit(exit, (SCREEN_WIDTH / 2 + 225, SCREEN_HEIGHT / 2 - 75))
+
         pygame.display.update()
 
 
