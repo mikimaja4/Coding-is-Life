@@ -212,6 +212,50 @@ def pause():
         screen.blit(exit, (SCREEN_WIDTH / 2 + 225, SCREEN_HEIGHT / 2 - 75))
 
         pygame.display.update()
+        
+
+def gameOver():
+
+    SCREEN_WIDTH = 1600
+    SCREEN_HEIGHT = 900
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+    background_img = pygame.image.load('images/mainbackground.png')
+    background = pygame.transform.scale(background_img, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
+    gameover_img = pygame.image.load('images/GameOver.png')
+    gameover = pygame.transform.scale(gameover_img, (1000, 200))
+
+    exit_img = pygame.image.load('images/ExitButton.png')
+    exit = pygame.transform.scale(exit_img, (350, 150))
+
+    menu_img = pygame.image.load('images/MenuButton.png')
+    menu = pygame.transform.scale(menu_img, (350, 150))
+
+    run = True
+    while run:
+
+        button_menu_collide = pygame.Rect(SCREEN_WIDTH / 2 - 375, SCREEN_HEIGHT / 2 - 75, 350, 150)
+        button_exit_collide = pygame.Rect(SCREEN_WIDTH / 2 + 25, SCREEN_HEIGHT / 2 - 75, 350, 150)
+        mx, my = pygame.mouse.get_pos()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if button_menu_collide.collidepoint((mx, my)):
+                    main()
+                if button_exit_collide.collidepoint((mx, my)):
+                    quit()
+
+        screen.blit(background, (0, 0))
+        screen.blit(gameover, (SCREEN_WIDTH / 2 - 500, SCREEN_HEIGHT / 2 - 350))
+        screen.blit(menu, (SCREEN_WIDTH / 2 - 375, SCREEN_HEIGHT / 2 - 75))
+        screen.blit(exit, (SCREEN_WIDTH / 2 + 25, SCREEN_HEIGHT / 2 - 75))
+
+        pygame.display.update()
 
 
 def mainMenu(screen, background):
