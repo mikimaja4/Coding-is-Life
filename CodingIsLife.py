@@ -120,8 +120,8 @@ def game_background():
     bg1 = pygame.transform.scale(bg1_img, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
     # icons
-    menubutton_img = pygame.image.load('images/button/menubutton.png')
-    menubutton = pygame.transform.scale(menubutton_img, (100, 50))
+    menubutton_img = pygame.image.load('images/settings.png')
+    menubutton = pygame.transform.scale(menubutton_img, (50, 50))
 
     running = True
 
@@ -129,11 +129,10 @@ def game_background():
         clock.tick(fps)
 
         screen.blit(bg1, (0, 0))
-
-        screen.blit(menubutton, (SCREEN_WIDTH - 110, 10))
+        screen.blit(menubutton, (SCREEN_WIDTH - 60, 10))
 
         mx, my = pygame.mouse.get_pos()
-        button_1 = pygame.Rect(SCREEN_WIDTH - 150, 0, 150, 100)
+        button_1 = pygame.Rect(SCREEN_WIDTH - 60, 10, 50, 50)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
