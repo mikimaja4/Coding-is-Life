@@ -64,24 +64,32 @@ def main():
     pygame.display.set_caption("Coding Is Life")
 
     #Create the players entity object
-    player = entity.Entity(50, screen.get_height() / 2, 6, "assets/dinos/DinoBlueIdle.png", 4, "assets/dinos/DinoBlueMoving.png", 6, "assets/dinos/DinoBlueHit.png", 3)
+    player = entity.Entity(50, screen.get_height() / 2, 6, "dinos/DinoBlueIdle.png", 4, "dinos/DinoBlueMoving.png", 6, "dinos/DinoBlueHit.png", 3)
     #Create the enemy entity objects
     pythonEnemies = []
-    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/AngryPig/Idle.png", 9, "assets/enemies/AngryPig/Moving.png", 16, "assets/enemies/AngryPig/Hit.png", 5))
-    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/Bat/Idle.png", 12, "assets/enemies/Bat/Moving.png", 7, "assets/enemies/Bat/Hit.png", 5))
-    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/Bee/Idle.png", 6, "assets/enemies/Bee/Moving.png", 6, "assets/enemies/Bee/Hit.png", 5))
-    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/BlueBird/Idle.png", 9, "assets/enemies/BlueBird/Moving.png", 9, "assets/enemies/BlueBird/Hit.png", 5))
-    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/Bunny/Idle.png", 8, "assets/enemies/Bunny/Moving.png", 12, "assets/enemies/Bunny/Hit.png", 5))
+    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "AngryPig/Idle.png", 9, "AngryPig/Moving.png", 16, "AngryPig/Hit.png", 5))
+    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "Bat/Idle.png", 12, "Bat/Moving.png", 7, "Bat/Hit.png", 5))
+    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "Bee/Idle.png", 6, "Bee/Moving.png", 6, "Bee/Hit.png", 5))
+    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "BlueBird/Idle.png", 9, "BlueBird/Moving.png", 9, "BlueBird/Hit.png", 5))
+    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "Bunny/Idle.png", 8, "Bunny/Moving.png", 12, "Bunny/Hit.png", 5))
     #For some reason the Chameleon gets placed an additional ~200 pixels right and idk why
-    pythonEnemies.append(entity.Entity(screen.get_width() - 400, screen.get_height() / 2, 6, "assets/enemies/Chameleon/Idle.png", 13, "assets/enemies/Chameleon/Moving.png", 8, "assets/enemies/Chameleon/Hit.png", 5))
-    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/Chicken/Idle.png", 13, "assets/enemies/Chicken/Moving.png", 14, "assets/enemies/Chicken/Hit.png", 5))
-    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/Duck/Idle.png", 10, "assets/enemies/Duck/Moving.png", 10, "assets/enemies/Duck/Hit.png", 5))
-    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/FatBird/Idle.png", 8, "assets/enemies/FatBird/Moving.png", 8, "assets/enemies/FatBird/Hit.png", 5))
-    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/Ghost/Idle.png", 10, "assets/enemies/Ghost/Moving.png", 10, "assets/enemies/Ghost/Hit.png", 5))
+    pythonEnemies.append(entity.Entity(screen.get_width() - 400, screen.get_height() / 2, 6, "Chameleon/Idle.png", 13, "Chameleon/Moving.png", 8, "Chameleon/Hit.png", 5))
+    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "Chicken/Idle.png", 13, "Chicken/Moving.png", 14, "Chicken/Hit.png", 5))
+    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "Duck/Idle.png", 10, "Duck/Moving.png", 10, "Duck/Hit.png", 5))
+    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "FatBird/Idle.png", 8, "FatBird/Moving.png", 8, "FatBird/Hit.png", 5))
+    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "Ghost/Idle.png", 10, "Ghost/Moving.png", 10, "Ghost/Hit.png", 5))
     # Create a new question class rather than using an array
     pythonQuestions = [
-        ["Question 1", "DamageSelf", "DamageEnemy", "Answer 1", "Answer 2", "Answer 3", "Answer 4", "Answer 5"],
-        ["Question 2", "Answer 1", "Answer 2", "Answer 3", "Answer 4", "Answer 5"]]
+        ['What is the value of x after the following statements?\nx = 10\ny=2\nx = x + y', '12', '10', '2', '102'],
+        ['A variable can hold more than one value.\nTrue or False?', 'False', 'True'],
+        ['Which of the following variables holds a string?', 'z = \'python\'', 'x = True', 'y = 7.29'],
+        ['Which of the following variable names (identifiers) is invalid?', '9lives', '_cat4', 'meowtime', 'number_of_kittens'],
+        ['Is x + y = 2 + 5 a valid assignment statement?', 'Invalid', 'Valid'],
+        ['Which of the following is an invalid assignment statement?', 'x + 3 = 10', 'x = 4', 'x = y', 'x = y + 4'],
+        ['What is the value of sum after the following statements?\nx = 10\nsum = x + 20', '30', '10', '20'],
+        ['Which of the following is not a numeric data type?', 'boolean', 'int', 'float', 'long'],
+        ['Given the following assignments, which of the following is a valid operation?\ntext = \'some words\'\nletter = \'c\'\nnumber = 27\ndigits = 9000', 'number + digits', 'text + letter', 'number + text', 'letter + digits'],
+        ['What will bee the output after following statements?\nx = \'Hello\'\ny = \'world!\'\nprint(x, y)', 'Hello world!', 'Helloworld!', 'Hello, world!', 'Hello,world!']]
     # Need to load each background into this array
     pythonBackgrounds = [background]
 
