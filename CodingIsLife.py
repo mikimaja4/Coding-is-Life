@@ -1,4 +1,4 @@
-import os, pygame, arcade, spritesheet, button, time
+import os, pygame, arcade, spritesheet, entity, button, time
 #from tkinter import *
 #import pyrebase
 from pygame.locals import *
@@ -28,10 +28,10 @@ from screeninfo import get_monitors
 import dropDown
 
 monitors = get_monitors() # Get the resolution of all of the users monitors
-screen_width = monitors[0].width # Get width of first monitor found
-screen_height = monitors[0].height # Get height of first monitor found
-pos_x = screen_width/2 - 800 # Calculate the x-location
-pos_y = screen_height/2 - 450 # Calculate the y-location
+w = monitors[0].width # Get width of first monitor found
+h = monitors[0].height # Get height of first monitor found
+pos_x = w/2 - 800 # Calculate the x-location
+pos_y = h/2 - 450 # Calculate the y-location
 os.environ['SDL_VIDEO_WINDOW_POS'] = '%i,%i' % (pos_x,pos_y) # Set pygame window location
 
 #root=Tk()
@@ -56,16 +56,28 @@ def main():
     global count, language, level, scene
     screen = pygame.display.set_mode([500, 500], RESIZABLE)
     w, h = pygame.display.get_surface().get_size()
-    # Background
+    #Set the background and adjust its size
     background = pygame.image.load('menuBackground.png')
     background = pygame.transform.scale(background, (w, h))
 
     clock = pygame.time.Clock()
     pygame.display.set_caption("Coding Is Life")
 
-    player = 'FILLER'
-    # Create a new Enemy class to easily fill this array
+    #Create the players entity object
+    player = entity.Entity(50, screen.get_height() / 2, 6, "assets/dinos/DinoBlueIdle.png", 4, "assets/dinos/DinoBlueMoving.png", 6, "assets/dinos/DinoBlueHit.png", 3)
+    #Create the enemy entity objects
     pythonEnemies = []
+    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/AngryPig/Idle.png", 9, "assets/enemies/AngryPig/Moving.png", 16, "assets/enemies/AngryPig/Hit.png", 5))
+    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/Bat/Idle.png", 12, "assets/enemies/Bat/Moving.png", 7, "assets/enemies/Bat/Hit.png", 5))
+    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/Bee/Idle.png", 6, "assets/enemies/Bee/Moving.png", 6, "assets/enemies/Bee/Hit.png", 5))
+    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/BlueBird/Idle.png", 9, "assets/enemies/BlueBird/Moving.png", 9, "assets/enemies/BlueBird/Hit.png", 5))
+    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/Bunny/Idle.png", 8, "assets/enemies/Bunny/Moving.png", 12, "assets/enemies/Bunny/Hit.png", 5))
+    #For some reason the Chameleon gets placed an additional ~200 pixels right and idk why
+    pythonEnemies.append(entity.Entity(screen.get_width() - 400, screen.get_height() / 2, 6, "assets/enemies/Chameleon/Idle.png", 13, "assets/enemies/Chameleon/Moving.png", 8, "assets/enemies/Chameleon/Hit.png", 5))
+    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/Chicken/Idle.png", 13, "assets/enemies/Chicken/Moving.png", 14, "assets/enemies/Chicken/Hit.png", 5))
+    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/Duck/Idle.png", 10, "assets/enemies/Duck/Moving.png", 10, "assets/enemies/Duck/Hit.png", 5))
+    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/FatBird/Idle.png", 8, "assets/enemies/FatBird/Moving.png", 8, "assets/enemies/FatBird/Hit.png", 5))
+    pythonEnemies.append(entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/Ghost/Idle.png", 10, "assets/enemies/Ghost/Moving.png", 10, "assets/enemies/Ghost/Hit.png", 5))
     # Create a new question class rather than using an array
     pythonQuestions = [
         ["Question 1", "DamageSelf", "DamageEnemy", "Answer 1", "Answer 2", "Answer 3", "Answer 4", "Answer 5"],
@@ -79,11 +91,27 @@ def main():
         count += 1
         screen.fill((50, 50, 50))
         screen.blit(background, (0, 0))
-        # Check for closing window event
+        #Event handling
         for event in pygame.event.get():
             if event.type == QUIT:
                 print("Quit")
                 return False
+            if event.type == pygame.VIDEORESIZE:
+                w, h = pygame.display.get_surface().get_size()
+                #Adjust the size of the background
+                background = pygame.image.load('menuBackground.png')
+                background = pygame.transform.scale(background, (w, h))
+                if scene == "battle":                    
+                    #Adjust the player position, x is constant
+                    player.y = screen.get_height() / 2
+                    #Adjust the position of the enemy, both x and y
+                    if language == "python":
+                        print(level)
+                        pythonEnemies[level].x = screen.get_width() - 200
+                        pythonEnemies[level].y = screen.get_height() / 2
+                    elif language == "java":
+                        javaEnemies[level].x = screen.get_width() - 200
+                        javaEnemies[level].y = screen.get_height() / 2
 
         if scene == "mainMenu":
             mainMenu(screen, background)
@@ -98,58 +126,19 @@ def main():
         elif scene == "battle":
             # Call battle() using the list of language and level dependent backgrounds and enemies
             if language == "python":
-                battle(screen, level, player, pythonEnemies, pythonQuestions, pythonBackgrounds)
-            # elif language == "Java":
-            # battle(screen, level, player, javaEnemies, javaQuestions, javaBackgrounds)
+                #Might need to use the returned values from battle when dealing with hp, not sure atm
+                battleReturn = battle(screen, level, player, pythonEnemies, pythonQuestions, pythonBackgrounds)
+        elif scene == "pause":
+            pause(screen)
+        elif scene == "gameOver":
+            gameOver(screen)
 
         # Manage the fps and update the screen
         pygame.display.update()
         clock.tick(fps)
 
-
-def game_background():
-    clock = pygame.time.Clock()
-    fps = 60
-
-    SCREEN_WIDTH = 1600
-    SCREEN_HEIGHT = 900
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-
-    # base background
-    bg1_img = pygame.image.load('images/bg1/l1.jpg')
-    bg1 = pygame.transform.scale(bg1_img, (SCREEN_WIDTH, SCREEN_HEIGHT))
-
-    # icons
-    menubutton_img = pygame.image.load('images/settings.png')
-    menubutton = pygame.transform.scale(menubutton_img, (50, 50))
-
-    running = True
-
-    while running:
-        clock.tick(fps)
-
-        screen.blit(bg1, (0, 0))
-        screen.blit(menubutton, (SCREEN_WIDTH - 60, 10))
-
-        mx, my = pygame.mouse.get_pos()
-        button_1 = pygame.Rect(SCREEN_WIDTH - 60, 10, 50, 50)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_p:
-                    pause()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if button_1.collidepoint((mx, my)):
-                    pause()
-
-        pygame.display.update()
-
-    pygame.quit()
-
-
-def pause():
+def pause(screen):
+    global scene, language
     SCREEN_WIDTH = 1600
     SCREEN_HEIGHT = 900
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -173,36 +162,45 @@ def pause():
     button_menu = pygame.Rect(SCREEN_WIDTH - 150, 0, 150, 100)
     button_exit = pygame.Rect(SCREEN_WIDTH - 150, 0, 150, 100)
 
-    paused = True
-    while paused:
 
-        button_play_collide = pygame.Rect(SCREEN_WIDTH / 2 - 575, SCREEN_HEIGHT / 2 - 75, 350, 150)
-        button_menu_collide = pygame.Rect(SCREEN_WIDTH / 2 - 175, SCREEN_HEIGHT / 2 - 75, 350, 150)
-        button_exit_collide = pygame.Rect(SCREEN_WIDTH / 2 + 225, SCREEN_HEIGHT / 2 - 75, 350, 150)
-        mx, my = pygame.mouse.get_pos()
+    button_play_collide = pygame.Rect(SCREEN_WIDTH / 2 - 575, SCREEN_HEIGHT / 2 - 75, 350, 150)
+    button_menu_collide = pygame.Rect(SCREEN_WIDTH / 2 - 175, SCREEN_HEIGHT / 2 - 75, 350, 150)
+    button_exit_collide = pygame.Rect(SCREEN_WIDTH / 2 + 225, SCREEN_HEIGHT / 2 - 75, 350, 150)
+    mx, my = pygame.mouse.get_pos()
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            quit()
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_c:
+                return True
+            elif event.key == pygame.K_m:
+                if language == "python":
+                    scene = "pythonGame"
+                elif language == "java":
+                    scene = "javaGame"
+                print("menu")
+                return True
+            elif event.key == pygame.K_q:
                 pygame.quit()
                 quit()
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_c:
-                    paused = False
-                elif event.key == pygame.K_m:
-                    main()
-                elif event.key == pygame.K_q:
-                    pygame.quit()
-                    quit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if button_play_collide.collidepoint((mx, my)):
-                    game_background()
-                if button_menu_collide.collidepoint((mx, my)):
-                    #screen = pygame.display.set_mode([500, 500], RESIZABLE)
-                    #mainMenu(pygame.display.set_mode([500, 500], RESIZABLE), background_img)
-                    main()
-                if button_exit_collide.collidepoint((mx, my)):
-                    quit()
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if button_play_collide.collidepoint((mx, my)):
+                scene = "battle"
+                print("battle")
+                return True
+            if button_menu_collide.collidepoint((mx, my)):
+                if language == "python":
+                    scene = "pythonGame"
+                elif language == "java":
+                    scene = "javaGame"
+                print("menu")
+                return True
+            if button_exit_collide.collidepoint((mx, my)):
+                pygame.quit()
+                quit()
 
         screen.blit(background, (0, 0))
         #screen.blit(message, (SCREEN_WIDTH / 2 - 500, SCREEN_HEIGHT / 2 - 350))
@@ -214,7 +212,8 @@ def pause():
         pygame.display.update()
         
 
-def gameOver():
+def gameOver(screen):
+    global scene
 
     SCREEN_WIDTH = 1600
     SCREEN_HEIGHT = 900
@@ -261,21 +260,12 @@ def gameOver():
 def mainMenu(screen, background):
     global scene
 
-    fullscreen = False
-    for event in pygame.event.get():
-        if event.type == pygame.VIDEORESIZE:
-            if not fullscreen:
-                w, h = pygame.display.get_surface().get_size()
-                background = pygame.transform.scale(background, (w, h))
-        if event.type == QUIT:
-            quit()
-        if event.type == KEYDOWN:
-            if event.key == K_ESCAPE:
-                quit()
     pygame.display.set_caption('Coding is Life')
     w, h = pygame.display.get_surface().get_size()
+    #Set the background and adjust its size
     background = pygame.image.load('menuBackground.png')
     background = pygame.transform.scale(background, (w, h))
+    screen.blit(background, (0, 0))
 
     #Testing exit button
     #Todo figure out why the button image wont load... or why it breaks the program
@@ -291,9 +281,7 @@ def mainMenu(screen, background):
     font = pygame.font.SysFont(None, 30)
     titleFont = pygame.font.SysFont(None, 50)
 
-    # Main Menu Background
 
-    screen.blit(background, (0, 0))
     draw_text('Coding is Life', titleFont, (255, 255, 255), screen, w / 2, h / 2 - 20)
     draw_text('Start', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 25)
     draw_text('Options', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 55)
@@ -307,7 +295,19 @@ def mainMenu(screen, background):
     quitButton = pygame.Rect(0, 0, 100, 25)
     quitButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 85)
 
+    #Event handling
     for event in pygame.event.get():
+        if event.type == pygame.VIDEORESIZE:
+            w, h = pygame.display.get_surface().get_size()
+            background = pygame.image.load('menuBackground.png')
+            background = pygame.transform.scale(background, (w, h))
+        if event.type == QUIT:
+            pygame.quit()
+            quit()
+        if event.type == KEYDOWN:
+            if event.key == K_ESCAPE:
+                pygame.quit()
+                quit()
         if event.type == MOUSEBUTTONDOWN:
             if event.button == 1:
                 mx, my = pygame.mouse.get_pos()
@@ -324,10 +324,8 @@ def mainMenu(screen, background):
                 # If the quit button is clicked close the program
                 elif quitButton.collidepoint((mx, my)):
                     play('buttonClick.wav', 0.5)
+                    pygame.quit()
                     quit()
-        if event.type == KEYDOWN:
-            if event.key == K_ESCAPE:
-                quit()
 
     #pygame.draw.rect(screen,(2,0,0),exit_button)
     #pygame.draw.rect(screen, (225, 0, 0), optionsButton)
@@ -461,7 +459,7 @@ def options(screen, background):
 
 
 def pythonGame(screen, background):
-    global scene, count
+    global scene, level, count
     w, h = pygame.display.get_surface().get_size()
     background = pygame.image.load('menuBackground.png')
     background = pygame.transform.scale(background, (w, h))
@@ -474,14 +472,21 @@ def pythonGame(screen, background):
     draw_text('Levels', titleFont, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 - 150)
     levelButtons = []
     for i in range(5):
-        for j in range(2):
-            draw_text('Level ' + str((i + 1) + (j * 5)), font, (255, 255, 255), screen,
-                      screen.get_width() / 2 - 50 + (j * 100), screen.get_height() / 2 - 85 + (i * 30))
-            # Create the rectangle for click detection of the current level
-            newButton = pygame.Rect(0, 0, 50, 10)
-            # Center the button in the correct spot
-            newButton.center = (screen.get_width() / 2 + 50 - (j * 100), screen.get_height() / 2 - 85 + (i * 30))
-            levelButtons.append(newButton)
+        draw_text('Level ' + str((i + 1)), font, (255, 255, 255), screen,
+                  screen.get_width() / 2 - 50, screen.get_height() / 2 - 85 + (i * 30))
+        # Create the rectangle for click detection of the current level
+        newButton = pygame.Rect(0, 0, 50, 10)
+        # Center the button in the correct spot
+        newButton.center = (screen.get_width() / 2 - 50, screen.get_height() / 2 - 85 + (i * 30))
+        levelButtons.append(newButton)
+    for i in range(5):
+        draw_text('Level ' + str((i + 6)), font, (255, 255, 255), screen,
+                  screen.get_width() / 2 + 50, screen.get_height() / 2 - 85 + (i * 30))
+        # Create the rectangle for click detection of the current level
+        newButton = pygame.Rect(0, 0, 50, 10)
+        # Center the button in the correct spot
+        newButton.center = (screen.get_width() / 2 + 50, screen.get_height() / 2 - 85 + (i * 30))
+        levelButtons.append(newButton)
 
     draw_text('Back', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 90)
     backButton = pygame.Rect(0, 0, 50, 10)
@@ -502,13 +507,13 @@ def pythonGame(screen, background):
                     return True
                 # Check if any of the level buttons have been clicked
                 for i in range(len(levelButtons)):
-                    game_background()
+                    #game_background()
                     # Also need to check if the level has been unlocked yet
                     if levelButtons[i].collidepoint((mx, my)):
                         play('buttonClick.wav', 0.5)
                         scene = "battle"
                         language = "python"
-                        level = i + 1
+                        level = i
 
 
 def javaGame(screen, background):
@@ -540,16 +545,50 @@ def javaGame(screen, background):
                     scene = "start"
                     return True
 
-# testing
 def battle(screen, level, player, enemyList, questionList, backgroundList):
     global scene
     screen.fill((50, 50, 50))
-    # TEMPORARY TO REMOVE LATER
+    mx, my = pygame.mouse.get_pos()
     w, h = pygame.display.get_surface().get_size()
+    #Load and display the background
     background = pygame.image.load('menuBackground.png')
     background = pygame.transform.scale(background, (w, h))
-
     screen.blit(background, (0, 0))
+
+    #Load and display the menu button
+    menubutton_img = pygame.image.load('images/settings.png')
+    menubutton = pygame.transform.scale(menubutton_img, (50, 50))
+    screen.blit(menubutton, (w - 60, 10))
+    
+    button_1 = pygame.Rect(w - 60, 10, 50, 50)
+
+    #Event handling
+    for event in pygame.event.get():
+        if event.type == pygame.VIDEORESIZE:
+            w, h = pygame.display.get_surface().get_size()
+            #Adjust the size of the background
+            background = pygame.image.load('menuBackground.png')
+            background = pygame.transform.scale(background, (w, h))
+            #Adjust the player position, x is constant
+            player.y = screen.get_height() / 2
+            #Adjust the position of the enemy, both x and y
+            enemyList[level].x = screen.get_width() - 200
+            enemyList[level].y = screen.get_height() / 2
+        if event.type == QUIT:
+            pygame.quit()
+            quit()
+        if event.type == KEYDOWN:
+            if event.key == K_ESCAPE:
+                pygame.quit()
+                quit()
+            if event.key == K_p:
+                scene = "pause"
+                return True
+        if event.type == MOUSEBUTTONDOWN:
+            if button_1.collidepoint((mx, my)):
+                scene = "pause"
+                return True
+
     # Display player, enemy, HUD
     # Check for events
     # Check if correct is hit
@@ -558,26 +597,19 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
 
     # Moving the enemy
 
-    # ----Putting the sprite animations here as a filler, will move later-----#
-    # Load the sprite sheet
-    playerSheet = pygame.image.load("assets/dinos/DinoBlue.png").convert_alpha()
-    # Create a sprite sheet object
-    playerSprite = spritesheet.SpriteSheet(playerSheet)
-    # Load the desired frame from the sprite sheet
-    # Divide count by what factor you want to slow down the animation by
-    playerFrame = playerSprite.getImage(int(count / 6) % 4, 24, 5)
 
-    # Load the sprite sheet
-    enemySheet = pygame.image.load("assets/enemies/ghost/Idle.png").convert_alpha()
-    # Create a sprite sheet object
-    enemySprite = spritesheet.SpriteSheet(enemySheet)
-    # Load the desired frame from the sprite sheet
-    # Divide count by what factor you want to slow down the animation by
-    enemyFrame = enemySprite.getImage(int(count / 5) % 10, 10, 4)
+    #####TEST CODE TO SHOW ANIMATIONS####
+    phases = ["idle", "moving", "hit"]
+    phase = phases[int(count / 250 % 3)]
+
+    ######################################
 
     # Display both sprites on the screen
-    screen.blit(playerFrame, (50, screen.get_height() / 2))
-    screen.blit(enemyFrame, (screen.get_width() - 200, screen.get_height() / 2))
+    screen.blit(player.display(screen, .1, phase, fps), (player.x, player.y))
+    screen.blit(enemyList[level].display(screen, .1, phase, fps), (enemyList[level].x, enemyList[level].y))
+
+    #Return the updated player and enemy so that any of the changes made this frame will maintain
+    return (player, enemyList)
 
 
 def cutscene():
@@ -616,4 +648,3 @@ if __name__ == '__main__':
 
     main()
     quit()
-
