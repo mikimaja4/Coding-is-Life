@@ -50,6 +50,28 @@ def draw_text(text, font, color, surface, x, y):
     textrect = textobj.get_rect()
     textrect.center = (x, y)
     surface.blit(textobj, textrect)
+    
+#Draw a box with rounded edges centered at x,y
+def drawTextBox(screen, x, y, width, height, text = ''):
+        #Create and color the surface for the box
+        box = pygame.Surface((width, height))
+        box.fill((255,255,255))
+        #Display the filled surface on the input surface
+        screen.blit(box, (x - width/2, y - height/2))
+        #Draw the outline on the input surface
+        pygame.draw.rect(screen, (0,0,0), pygame.Rect(x - width/2 - 1, y - height/2 - 1, width + 2, height + 2), 2, 3)
+        #Draw the text if provided
+        questionFont = pygame.font.Font(None, 25)
+        #text = questionFont.render(text, True, (0,0,0))
+        #textRect = text.get_rect(center=(x, y))
+        #screen.blit(text, textRect)
+
+        lines = text.splitlines()
+        spacing = 20
+        y -= height * .33
+        for line in lines:
+            draw_text(line, questionFont, (0,0,0), screen, x, y)
+            y += spacing
 
 
 def main():
