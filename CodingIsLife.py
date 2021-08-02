@@ -53,13 +53,16 @@ def draw_text(text, font, color, surface, x, y):
     
 #Draw a box with rounded edges centered at x,y
 def drawTextBox(screen, x, y, width, height, text = ''):
+        thickness = 4
+        roundness = 6
         #Create and color the surface for the box
         box = pygame.Surface((width, height))
         box.fill((255,255,255))
         #Display the filled surface on the input surface
         screen.blit(box, (x - width/2, y - height/2))
         #Draw the outline on the input surface
-        pygame.draw.rect(screen, (0,0,0), pygame.Rect(x - width/2 - 1, y - height/2 - 1, width + 2, height + 2), 2, 3)
+        boxRect = pygame.Rect(x - width/2 - thickness/2, y - height/2 - thickness/2, width + thickness, height + thickness)
+        pygame.draw.rect(screen, (0,0,0), boxRect, thickness, roundness)
         #Draw the text if provided
         questionFont = pygame.font.Font(None, 25)
         #text = questionFont.render(text, True, (0,0,0))
@@ -69,9 +72,16 @@ def drawTextBox(screen, x, y, width, height, text = ''):
         lines = text.splitlines()
         spacing = 20
         y -= height * .33
+        #Add a new line before the text, not sure if theres a better way to do this
+        if len(lines) == 1:
+            lines.append(lines[0])
+            lines[0] = ''
         for line in lines:
             draw_text(line, questionFont, (0,0,0), screen, x, y)
             y += spacing
+
+        #Return the rect object for collision detection
+        return boxRect
 
 
 def main():
@@ -211,7 +221,6 @@ def pause(screen):
                     scene = "pythonGame"
                 elif language == "java":
                     scene = "javaGame"
-                print("menu")
                 return True
             elif event.key == pygame.K_q:
                 pygame.quit()
@@ -219,7 +228,6 @@ def pause(screen):
         if event.type == pygame.MOUSEBUTTONDOWN:
             if button_play_collide.collidepoint((mx, my)):
                 scene = "battle"
-                print("battle")
                 return True
             if button_menu_collide.collidepoint((mx, my)):
                 if language == "python":
@@ -596,18 +604,12 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
     questionFont = pygame.font.SysFont(None, 50)
     statementsFont = pygame.font.Font("consolas.ttf", 30)
 
-    for question in questionDisplayOrder:
-        lines = question[0].splitlines()
-        y = 60
-        spacing = 40
-        i = 0
-        for line in lines:
-            y += spacing
-            if i == 0:
-                draw_text(line, questionFont, (255, 255, 255), screen, w / 2, y)
-                i += 1
-            else:
-                draw_text(line, statementsFont, (255, 255, 255), screen, w / 2, y)
+    drawTextBox(screen, w/2, 70, 500, 100, "Big box test with a lot of text\nand also a\ncouple of new lines")
+    
+    drawTextBox(screen, w/2 - 150, 155, 280, 50, "Medium box test for answers")
+    drawTextBox(screen, w/2 + 150, 155, 280, 50, "Medium box test for answers")
+    drawTextBox(screen, w/2 - 150, 220, 280, 50, "Medium box test for answers")
+    drawTextBox(screen, w/2 + 150, 220, 280, 50, "Medium box test for answers")
 
     #Event handling
     for event in pygame.event.get():
