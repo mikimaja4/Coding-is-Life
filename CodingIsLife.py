@@ -109,7 +109,7 @@ def main():
                 #Adjust the size of the background
                 background = pygame.image.load('menuBackground.png')
                 background = pygame.transform.scale(background, (w, h))
-                if scene == "battle":                    
+                if scene == "battle":
                     #Adjust the player position, x is constant
                     player.y = screen.get_height() / 2
                     #Adjust the position of the enemy, both x and y
@@ -218,7 +218,7 @@ def pause(screen):
         screen.blit(exit, (SCREEN_WIDTH / 2 + 225, SCREEN_HEIGHT / 2 - 75))
 
         pygame.display.update()
-        
+
 
 def gameOver(screen):
     global scene
@@ -483,7 +483,7 @@ def pythonGame(screen, background):
         draw_text('Level ' + str((i + 1)), font, (255, 255, 255), screen,
                   screen.get_width() / 2 - 50, screen.get_height() / 2 - 85 + (i * 30))
         # Create the rectangle for click detection of the current level
-        newButton = pygame.Rect(0, 0, 50, 10)
+        newButton = pygame.Rect(0, 0, 70, 15)
         # Center the button in the correct spot
         newButton.center = (screen.get_width() / 2 - 50, screen.get_height() / 2 - 85 + (i * 30))
         levelButtons.append(newButton)
@@ -499,7 +499,6 @@ def pythonGame(screen, background):
     draw_text('Back', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 90)
     backButton = pygame.Rect(0, 0, 50, 20)
     backButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 90)
-
     for event in pygame.event.get():
         if event.type == QUIT:
             quit()
@@ -514,14 +513,14 @@ def pythonGame(screen, background):
                     scene = "start"
                     return True
                     # Check if any of the level buttons have been clicked
-                    for i in range(len(levelButtons)):
-                        #game_background()
+                for i in range(0,len(levelButtons)):
+                    GameBackground()
                     # Also need to check if the level has been unlocked yet
                     if levelButtons[i].collidepoint((mx, my)):
-                        play('buttonClick.wav', 0.5)
-                        scene = "battle"
-                        language = "python"
-                        level = i
+                            play('buttonClick.wav', 0.5)
+                            scene = "battle"
+                            language = "python"
+                            level = i
 
 
 def javaGame(screen, background):
