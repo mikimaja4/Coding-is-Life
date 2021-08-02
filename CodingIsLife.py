@@ -65,9 +65,6 @@ def drawTextBox(screen, x, y, width, height, text = ''):
         pygame.draw.rect(screen, (0,0,0), boxRect, thickness, roundness)
         #Draw the text if provided
         questionFont = pygame.font.Font(None, 25)
-        #text = questionFont.render(text, True, (0,0,0))
-        #textRect = text.get_rect(center=(x, y))
-        #screen.blit(text, textRect)
 
         lines = text.splitlines()
         spacing = 20
@@ -81,7 +78,7 @@ def drawTextBox(screen, x, y, width, height, text = ''):
             y += spacing
 
         #Return the rect object for collision detection
-        return boxRect
+        return (boxRect, text)
 
 
 def main():
@@ -636,6 +633,14 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
             if button_1.collidepoint((mx, my)):
                 scene = "pause"
                 return True
+            if answerBox1[0].collidepoint((mx, my)):
+                print("Box 1,", answerBox1[1])
+            if answerBox2[0].collidepoint((mx, my)):
+                print("Box 2,", answerBox2[1])
+            if answerBox3[0].collidepoint((mx, my)):
+                print("Box 3,", answerBox3[1])
+            if answerBox4[0].collidepoint((mx, my)):
+                print("Box 4,", answerBox4[1])
 
     # Display player, enemy, HUD
     # Check for events
