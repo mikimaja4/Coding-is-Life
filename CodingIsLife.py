@@ -114,6 +114,18 @@ def main():
         def basic_health(self):
             pygame.draw.rect(screen, (255, 0, 0), (10, 10, self.current_health / self.health_ratio, 25))
             pygame.draw.rect(screen, (255, 255, 255), (10, 10, self.health_bar_length, 25), 4)
+            font = pygame.font.Font(None, 36)
+            current_text = str(self.current_health)
+            current = font.render(current_text, False, (0, 0, 0))
+            screen.blit(current, (10, 40))
+
+            slash = font.render('/', False, (0, 0, 0))
+            screen.blit(slash, (55, 40))
+
+            max_text = str(self.maximum_health)
+            max = font.render(max_text, False, (0, 0, 0))
+            screen.blit(max, (68, 40))
+
 
     global count, language, level, scene
     screen = pygame.display.set_mode([960, 540], RESIZABLE)
