@@ -88,12 +88,9 @@ def main():
     class health:
         def __init__(self):
             super().__init__()
-            self.image = pygame.Surface((40, 40))
-            self.image.fill((240, 240, 240))
-            self.rect = self.image.get_rect(center=(400, 00))
             self.current_health = 200
-            self.maximum_health = 1000
-            self.health_bar_length = 400
+            self.maximum_health = 999
+            self.health_bar_length = 150
             self.health_ratio = self.maximum_health / self.health_bar_length
 
         def update(self):
