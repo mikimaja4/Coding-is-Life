@@ -572,14 +572,20 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
     questionDisplayOrder = questionList[:]
     random.shuffle(questionDisplayOrder)
     questionFont = pygame.font.SysFont(None, 50)
+    statementsFont = pygame.font.Font("consolas.ttf", 30)
 
     for question in questionDisplayOrder:
         lines = question[0].splitlines()
         y = 60
         spacing = 40
+        i = 0
         for line in lines:
             y += spacing
-            draw_text(line, questionFont, (255, 255, 255), screen, w / 2, y)
+            if i == 0:
+                draw_text(line, questionFont, (255, 255, 255), screen, w / 2, y)
+                i += 1
+            else:
+                draw_text(line, statementsFont, (255, 255, 255), screen, w / 2, y)
 
     #Event handling
     for event in pygame.event.get():
