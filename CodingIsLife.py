@@ -120,7 +120,18 @@ def main():
         ['Given the following assignments, which of the following is a valid operation?\ntext = \'some words\'\nletter = \'c\'\nnumber = 27\ndigits = 9000', 'number + digits', 'text + letter', 'number + text', 'letter + digits'],
         ['What will bee the output after following statements?\nx = \'Hello\'\ny = \'world!\'\nprint(x, y)', 'Hello world!', 'Helloworld!', 'Hello, world!', 'Hello,world!']]
     # Need to load each background into this array
-    pythonBackgrounds = [background]
+    pythonBackgrounds = [
+        'images/bg1/l1.jpg',
+        'images/bg1/l11.jpg',
+        'images/bg1/l3.png',
+        'images/bg1/l4.png',
+        'images/bg1/l5.jpg',
+        'images/bg1/l6.jpg',
+        'images/bg1/l7.jpg',
+        'images/bg1/l8.jpg',
+        'images/bg1/l17.jpg',
+        'images/bg1/l16.jpg'
+    ]
 
     # Main game loop
     while True:
@@ -586,7 +597,7 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
     mx, my = pygame.mouse.get_pos()
     w, h = pygame.display.get_surface().get_size()
     #Load and display the background
-    background = pygame.image.load('menuBackground.png')
+    background = pygame.image.load(backgroundList[level])
     background = pygame.transform.scale(background, (w, h))
     screen.blit(background, (0, 0))
 
