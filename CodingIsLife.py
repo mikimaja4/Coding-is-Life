@@ -480,6 +480,7 @@ def options(screen, background):
 
     #todo Fix the dropdown menu to stop displaying once the new FPS is selected
     #todo link the FPS to the actual game FPS once selected
+    #todo fix why the dropdown menu displays OVER The actual options menu
 
 
     #pygame.draw.rect(screen, (5, 0, 0), backButton)
