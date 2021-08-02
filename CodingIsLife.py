@@ -1,4 +1,4 @@
-import os, pygame, arcade, spritesheet, entity, button, time
+import os, pygame, arcade, spritesheet, entity, button, time, random
 #from tkinter import *
 #import pyrebase
 from pygame.locals import *
@@ -569,6 +569,13 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
     screen.blit(menubutton, (w - 60, 10))
     
     button_1 = pygame.Rect(w - 60, 10, 50, 50)
+
+    questionDisplayOrder = questionList[:]
+    random.shuffle(questionDisplayOrder)
+
+    questionFont = pygame.font.SysFont(None, 50)
+
+    draw_text(questionDisplayOrder[0][0], questionFont, (255, 255, 255), screen, w / 2, 100)
 
     #Event handling
     for event in pygame.event.get():
