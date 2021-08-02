@@ -26,6 +26,7 @@ from screeninfo import get_monitors
 #auth = firebase.auth()
 #storage = firebase.storage()
 import dropDown
+import slider
 
 monitors = get_monitors() # Get the resolution of all of the users monitors
 w = monitors[0].width # Get width of first monitor found
@@ -441,53 +442,127 @@ def options(screen, background):
     draw_text('Options', titleFont, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 -100)
     draw_text('Music', font, (255, 255, 255), screen, screen.get_width() / 2 -110, screen.get_height() / 2 -50)
     draw_text('Sound Fx', font, (255, 255, 255), screen, screen.get_width() / 2 -125, screen.get_height() / 2 -10)
-    draw_text('Refresh Rate', font, (255, 255, 255), screen, screen.get_width() / 2 -140, screen.get_height() / 2 +30)
+    #draw_text('Refresh Rate', font, (255, 255, 255), screen, screen.get_width() / 2 -140, screen.get_height() / 2 +30)
     draw_text('Back', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 120)
 
     mx, my = pygame.mouse.get_pos()
     backButton = pygame.Rect(0, 0, 50, 30)
     backButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 120)
 
-    COLOR_INACTIVE = (84, 166, 55)
-    COLOR_ACTIVE = (137, 230, 102)
-    COLOR_LIST_INACTIVE = (255, 255, 255)
-    COLOR_LIST_ACTIVE = (137, 230, 102)
+    #TODO fix the slider so it shows on the game background
+    #slider test begin
+    #font = pygame.font.SysFont("Verdana", 12)
 
-    list1 = dropDown.DropDown(
-        [COLOR_INACTIVE, COLOR_ACTIVE],
-        [COLOR_LIST_INACTIVE, COLOR_LIST_ACTIVE],
-        screen.get_width() / 2 -40, screen.get_height() / 2 +17, 100, 20,
-        pygame.font.SysFont(None, 30),
-        "FPS", ["60", "75","120","144","240"])
-    run=True
-    clock = pygame.time.Clock()
-    while run:
-        clock.tick(30)
+    WHITE = (255, 255, 255)
+    BLACK = (0, 0, 0)
+    RED = (255, 50, 50)
+    YELLOW = (255, 255, 0)
+    GREEN = (42, 168, 80)
+    DARKGREEN = (28, 138, 61)
+    BLUE = (50, 50, 255)
+    GREY = (200, 200, 200)
+    ORANGE = (200, 100, 50)
+    CYAN = (0, 255, 255)
+    MAGENTA = (255, 0, 255)
+    TRANS = (1, 1, 1)
+    #clock = pygame.time.Clock()
 
-        event_list = pygame.event.get()
-        for event in event_list:
-            if event.type == pygame.QUIT:
-                run = False
-            if event.type == QUIT:
+    COLORS = [MAGENTA, RED, YELLOW, GREEN, CYAN, BLUE]
+    #xcolor = Gradient(COLORS, X).gradient
+
+    #pen = slider.Slider("Pen", 10, 15, 1, 25)
+    #freq = slider.Slider("Freq", 1, 3, 0.2, 150)
+    #jmp = slider.Slider("Jump", 10, 20, 1, 275)
+    #size = slider.Slider("Size", 200, 200, 20, 400)
+    #focus = slider.Slider("Focus", 0, 6, 0, 525)
+    #phase = slider.Slider("Phase", 3.14, 6, 0.3, 650)
+    #speed = slider.Slider("Speed", 50, 150, 10, 775)
+    #slides = [pen, freq, jmp, size, focus, phase, speed]
+
+    #num = 0
+
+    #while True:
+        #for event in pygame.event.get():
+            #if event.type == pygame.QUIT:
+              #  pygame.quit()
+             #   exit()
+            #elif event.type == pygame.MOUSEBUTTONDOWN:
+               # pos = pygame.mouse.get_pos()
+              #  for s in slides:
+             #       if s.button_rect.collidepoint(pos):
+            #            s.hit = True
+           # elif event.type == pygame.MOUSEBUTTONUP:
+         #       for s in slides:
+          #          s.hit = False
+
+        # Move slides
+        #for s in slides:
+         #   if s.hit:
+          #      s.move()
+
+        # Update screen
+        #num += 2
+
+        #for s in slides:
+        #    s.draw()
+
+        #pygame.display.flip()
+        #clock.tick(speed.val)
+    #slider end
+
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            quit()
+        if event.type == KEYDOWN:
+            if event.key == K_ESCAPE:
                 quit()
-            if event.type == KEYDOWN:
-                if event.key == K_ESCAPE:
-                    quit()
-            if event.type == MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    if backButton.collidepoint((mx, my)):
-                        play('buttonClick.wav', 0.5)
-                        scene = "mainMenu"
-                        return True
+        if event.type == MOUSEBUTTONDOWN:
+            if event.button == 1:
+                if backButton.collidepoint((mx, my)):
+                    play('buttonClick.wav', 0.5)
+                    scene = "mainMenu"
+                    return True
+    # part of drop down
+    #COLOR_INACTIVE = (84, 166, 55)
+    #COLOR_ACTIVE = (137, 230, 102)
+    #COLOR_LIST_INACTIVE = (255, 255, 255)
+    #COLOR_LIST_ACTIVE = (137, 230, 102)
 
-        selected_option = list1.update(event_list)
-        if selected_option >= 0:
-            list1.main = list1.options[selected_option]
-            if selected_option == 0:
-                run=False
+    #list1 = dropDown.DropDown(
+     #   [COLOR_INACTIVE, COLOR_ACTIVE],
+      #  [COLOR_LIST_INACTIVE, COLOR_LIST_ACTIVE],
+       # screen.get_width() / 2 -40, screen.get_height() / 2 +17, 100, 20,
+        #pygame.font.SysFont(None, 30),
+       # "FPS", ["60", "75","120","144","240"])
+   # run=True
+    #clock = pygame.time.Clock()
+    #while run:
+     #   clock.tick(30)
 
-        list1.draw(screen)
-        pygame.display.flip()
+      #  event_list = pygame.event.get()
+       # for event in event_list:
+        #    if event.type == pygame.QUIT:
+         #       run = False
+          #  if event.type == QUIT:
+           #     quit()
+            #if event.type == KEYDOWN:
+             #   if event.key == K_ESCAPE:
+              #      quit()
+            #if event.type == MOUSEBUTTONDOWN:
+             #   if event.button == 1:
+              #      if backButton.collidepoint((mx, my)):
+               #         play('buttonClick.wav', 0.5)
+                #        scene = "mainMenu"
+                 #       return True
+
+        #selected_option = list1.update(event_list)
+        #if selected_option >= 0:
+         #   list1.main = list1.options[selected_option]
+          #  if selected_option == 0:
+           #     run=False
+
+        #list1.draw(screen)
+        #pygame.display.flip()
 
     #todo Fix the dropdown menu to stop displaying once the new FPS is selected
     #todo link the FPS to the actual game FPS once selected
