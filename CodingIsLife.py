@@ -341,8 +341,8 @@ def gameOver(screen):
 
         screen.blit(background, (0, 0))
         screen.blit(gameover, (SCREEN_WIDTH / 2 - 500, SCREEN_HEIGHT / 2 - 350))
-        screen.blit(menu, (SCREEN_WIDTH / 2 - 375, SCREEN_HEIGHT / 2 - 75))
-        screen.blit(exit, (SCREEN_WIDTH / 2 + 25, SCREEN_HEIGHT / 2 - 75))
+        screen.blit(menu, (SCREEN_WIDTH / 2 - 375, SCREEN_HEIGHT / 2 +30))
+        screen.blit(exit, (SCREEN_WIDTH / 2 + 25, SCREEN_HEIGHT / 2 +30))
 
         pygame.display.update()
 
