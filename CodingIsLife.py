@@ -1,4 +1,4 @@
-import os, pygame, arcade, spritesheet, entity, button, dropDown, question, questionList, health, random
+import os, pygame, arcade, spritesheet, entity, button, dropDown, question, questionList, health
 from pygame.locals import *
 # from tkinter import *
 # import pyrebase
@@ -25,7 +25,6 @@ from screeninfo import get_monitors
 # db = firebase.database()
 # auth = firebase.auth()
 # storage = firebase.storage()
-import dropDown
 
 monitors = get_monitors()  # Get the resolution of all of the users monitors
 w = monitors[0].width  # Get width of first monitor found
@@ -36,51 +35,6 @@ os.environ['SDL_VIDEO_WINDOW_POS'] = '%i,%i' % (pos_x, pos_y)  # Set pygame wind
 
 # root=Tk()
 pygame.init()
-
-
-# Use pygame.mixer to play the input sound. **USE .wav**
-def play(filename, volume):
-    pygame.mixer.music.load(filename)
-    pygame.mixer.music.set_volume(volume)
-    pygame.mixer.music.play()
-    return True
-
-
-def draw_text(text, font, color, surface, x, y):
-    textobj = font.render(text, 1, color)
-    textrect = textobj.get_rect()
-    textrect.center = (x, y)
-    surface.blit(textobj, textrect)
-
-# Draw a box with rounded edges centered at x,y
-def drawTextBox(screen, x, y, width, height, text=''):
-    thickness = 4
-    roundness = 6
-    # Create and color the surface for the box
-    box = pygame.Surface((width, height))
-    box.fill((255, 255, 255))
-    # Display the filled surface on the input surface
-    screen.blit(box, (x - width / 2, y - height / 2))
-    # Draw the outline on the input surface
-    boxRect = pygame.Rect(x - width / 2 - thickness / 2, y - height / 2 - thickness / 2, width + thickness,
-                          height + thickness)
-    pygame.draw.rect(screen, (0, 0, 0), boxRect, thickness, roundness)
-    # Draw the text if provided
-    questionFont = pygame.font.Font(None, 25)
-
-    lines = text.splitlines()
-    spacing = 20
-    y -= height * .33
-    # Add a new line before the text, not sure if theres a better way to do this
-    if len(lines) == 1:
-        lines.append(lines[0])
-        lines[0] = ''
-    for line in lines:
-        draw_text(line, questionFont, (0, 0, 0), screen, x, y)
-        y += spacing
-
-    # Return the rect object for collision detection
-    return (boxRect, text)
 
 def main():
     global count, language, level, scene
@@ -146,8 +100,11 @@ def main():
     pythonQuestions.append(question.Question(screen, 'Given the following assignments, which of the following is a valid operation?\ntext = \'some words\'\nletter = \'c\'\nnumber = 27\ndigits = 9000',
                                              'number + digits',['text + letter','number + text','letter + digits']))
     pythonQuestions.append(question.Question(screen, 'What will be the output after following statements?\nx = \'Hello\'\ny = \'world!\'\nprint(x, y)','Hello world!', ['Helloworld!','Hello,world!','Hello, world!']))
+    #Convert pythonQuestions from a list to a questionList object
+    pythonQuestions = questionList.QuestionList(pythonQuestions)
+    
     #Shuffle the list so that they don't show up in the same order
-    random.shuffle(pythonQuestions)
+    pythonQuestions.shuffle()
     #question.Question(screen, question,answer, [wrong,wrong,wrong])
 
     # Need to load each background into this array
@@ -163,6 +120,10 @@ def main():
         'images/bg1/l17.jpg',
         'images/bg1/l16.jpg'
     ]
+
+    javaEnemies = []
+    javaQuestions = []
+    javaBackgrounds = []
     
     # Main game loop
     while True:
@@ -198,9 +159,9 @@ def main():
         elif scene == "options":
             options(screen, background)
         elif scene == "pythonGame":
-            pythonGame(screen, background)
+            pythonGame(screen, background, pythonEnemies)
         elif scene == "javaGame":
-            javaGame(screen, background)
+            javaGame(screen, background, javaEnemies)
         elif scene == "battle":
             # Call battle() using the list of language and level dependent backgrounds and enemies
             if language == "python":
@@ -223,7 +184,50 @@ def main():
         # Manage the fps and update the screen
         pygame.display.update()
         clock.tick(fps)
+        
+# Use pygame.mixer to play the input sound. **USE .wav**
+def play(filename, volume):
+    pygame.mixer.music.load(filename)
+    pygame.mixer.music.set_volume(volume)
+    pygame.mixer.music.play()
+    return True
 
+
+def draw_text(text, font, color, surface, x, y):
+    textobj = font.render(text, 1, color)
+    textrect = textobj.get_rect()
+    textrect.center = (x, y)
+    surface.blit(textobj, textrect)
+
+# Draw a box with rounded edges centered at x,y
+def drawTextBox(screen, x, y, width, height, text=''):
+    thickness = 4
+    roundness = 6
+    # Create and color the surface for the box
+    box = pygame.Surface((width, height))
+    box.fill((255, 255, 255))
+    # Display the filled surface on the input surface
+    screen.blit(box, (x - width / 2, y - height / 2))
+    # Draw the outline on the input surface
+    boxRect = pygame.Rect(x - width / 2 - thickness / 2, y - height / 2 - thickness / 2, width + thickness,
+                          height + thickness)
+    pygame.draw.rect(screen, (0, 0, 0), boxRect, thickness, roundness)
+    # Draw the text if provided
+    questionFont = pygame.font.Font(None, 25)
+
+    lines = text.splitlines()
+    spacing = 20
+    y -= height * .33
+    # Add a new line before the text, not sure if theres a better way to do this
+    if len(lines) == 1:
+        lines.append(lines[0])
+        lines[0] = ''
+    for line in lines:
+        draw_text(line, questionFont, (0, 0, 0), screen, x, y)
+        y += spacing
+
+    # Return the rect object for collision detection
+    return (boxRect, text)
 
 def pause(screen):
     global scene, language
@@ -560,7 +564,7 @@ def options(screen, background):
 
 
 
-def pythonGame(screen, background):
+def pythonGame(screen, background, pythonEnemies):
     global scene, level, count
     w, h = pygame.display.get_surface().get_size()
     background = pygame.image.load('menuBackground.png')
@@ -615,24 +619,44 @@ def pythonGame(screen, background):
                         scene = "battle"
                         language = "python"
                         level = i
+                        #Make sure the enemy has full hp
+                        pythonEnemies[level].health = pythonEnemies[level].maxHealth
 
 
-def javaGame(screen, background):
-    global scene
+def javaGame(screen, background, pythonEnemies):
+    global scene, level, count
     w, h = pygame.display.get_surface().get_size()
     background = pygame.image.load('menuBackground.png')
     background = pygame.transform.scale(background, (w, h))
+    screen.fill((0, 0, 0))
+    screen.blit(background, (0, 0))
 
-    font = pygame.font.SysFont(None, 20)
+    font = pygame.font.SysFont(None, 30)
     titleFont = pygame.font.SysFont(None, 50)
 
+    draw_text('Levels', titleFont, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 - 150)
+    levelButtons = []
+    for i in range(5):
+        draw_text('Level ' + str((i + 1)), font, (255, 255, 255), screen,
+                  screen.get_width() / 2 - 50, screen.get_height() / 2 - 85 + (i * 30))
+        # Create the rectangle for click detection of the current level
+        newButton = pygame.Rect(0, 0, 50, 10)
+        # Center the button in the correct spot
+        newButton.center = (screen.get_width() / 2 - 50, screen.get_height() / 2 - 85 + (i * 30))
+        levelButtons.append(newButton)
+    for i in range(5):
+        draw_text('Level ' + str((i + 6)), font, (255, 255, 255), screen,
+                  screen.get_width() / 2 + 50, screen.get_height() / 2 - 85 + (i * 30))
+        # Create the rectangle for click detection of the current level
+        newButton = pygame.Rect(0, 0, 70, 15)
+        # Center the button in the correct spot
+        newButton.center = (screen.get_width() / 2 + 50, screen.get_height() / 2 - 85 + (i * 30))
+        levelButtons.append(newButton)
+
     draw_text('Back', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 90)
+    backButton = pygame.Rect(0, 0, 50, 20)
+    backButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 90)
 
-    mx, my = pygame.mouse.get_pos()
-    backButton = pygame.Rect(0, 0, 50, 30)
-    backButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 120)
-
-    # todo fill in the rest of the game
     for event in pygame.event.get():
         if event.type == QUIT:
             quit()
@@ -641,10 +665,24 @@ def javaGame(screen, background):
                 quit()
         if event.type == MOUSEBUTTONDOWN:
             if event.button == 1:
+                mx, my = pygame.mouse.get_pos()
                 if backButton.collidepoint((mx, my)):
                     play('buttonClick.wav', 0.5)
                     scene = "start"
                     return True
+                    # Check if any of the level buttons have been clicked
+                for i in range(len(levelButtons)):
+                    # Also need to check if the level has been unlocked yet
+                    if levelButtons[i].collidepoint((mx, my)):
+                        play('buttonClick.wav', 0.5)
+                        scene = "battle"
+                        language = "java"
+                        level = i
+                        #Make sure the enemy has full hp
+                        javaEnemies[level].health = javaEnemies[level].maxHealth
+
+
+
 
 
 def battle(screen, level, player, enemyList, questionList, backgroundList):
@@ -666,7 +704,7 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
     questionFont = pygame.font.SysFont(None, 50)
     statementsFont = pygame.font.Font("consolas.ttf", 30)
 
-    questionList[0].display(screen)
+    questionList.currentQuestion.display(screen)
 
     # Event handling
     for event in pygame.event.get():
@@ -691,6 +729,33 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
                 scene = "pause"
                 return True
         if event.type == MOUSEBUTTONDOWN:
+            #Check if an answer was clicked and if the answer was correct
+            selection = questionList.currentQuestion.isClicked()
+            print(selection)
+            #If the user clicks on an answer
+            if not selection == None:
+                if selection[0]:
+                    #If the answer is correct flash green on the box clicked on and hurt the enemy
+                    print(enemyList[level].health)
+                    enemyList[level].takeDamage(10)
+                    print(enemyList[level].health)
+                    #If the enemies runs out of hp switch to the you win scene
+                    if enemyList[level].health <= 0:
+                        #scene = ""
+                        #return True
+                        print("Battle Won!")
+                   
+                else:
+                    #If its wrong flash red and hurt the player
+                    print(player.health)
+                    player.takeDamage(10)
+                    print(player.health)
+                    #If the player runs out of hp switch to the game over scene
+                    if player.health <= 0:
+                        scene = "gameOver"
+                        return True
+                #Switch to the next question whether or not it was correct
+                questionList.next()
             if button_1.collidepoint((mx, my)):
                 scene = "pause"
                 return True

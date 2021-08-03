@@ -35,19 +35,13 @@ class Question:
         #Whether or not the question is animating a correct/incorrect guess
         self.animating = False
 
-        #w, h = pygame.display.get_surface().get_size()
-        #self.answerBox1 = self.drawTextBox(self.screen, w / 2 - 150, 155, 280, 50, self.answer1)
-        #self.answerBox2 = self.drawTextBox(self.screen, w / 2 + 150, 155, 280, 50, self.answer2)
-        #self.answerBox3 = self.drawTextBox(self.screen, w / 2 - 150, 220, 280, 50, self.answer3)
-        #self.answerBox4 = self.drawTextBox(self.screen, w / 2 + 150, 220, 280, 50, self.answer4)
-
     # Draw a box with rounded edges centered at x,y
-    def drawTextBox(self, screen, x, y, width, height, text=''):
+    def drawTextBox(self, screen, x, y, width, height, backgroundColor, text=''):
         thickness = 4
         roundness = 6
         # Create and color the surface for the box
         box = pygame.Surface((width, height))
-        box.fill((255, 255, 255))
+        box.fill(backgroundColor)
         # Display the filled surface on the input surface
         screen.blit(box, (x - width / 2, y - height / 2))
         # Draw the outline on the input surface
@@ -90,28 +84,30 @@ class Question:
     def isClicked(self):
         #Mouse position
         mx, my = pygame.mouse.get_pos()
-        for event in pygame.event.get():
-            if event.type == MOUSEBUTTONDOWN:
-                if self.answerBox1[0].collidepoint((mx, my)):
-                    print("Box 1,", self.answerBox1[1], ",", self.checkAnswer(self.answerBox1[1]))
-                if self.answerBox2[0].collidepoint((mx, my)):
-                    print("Box 2,", self.answerBox2[1], ",", self.checkAnswer(self.answerBox2[1]))
-                if self.answerBox3[0].collidepoint((mx, my)):
-                    print("Box 3,", self.answerBox3[1], ",", self.checkAnswer(self.answerBox3[1]))
-                if self.answerBox4[0].collidepoint((mx, my)):
-                    print("Box 4,", self.answerBox4[1], ",", self.checkAnswer(self.answerBox4[1]))
+        if self.answerBox1[0].collidepoint((mx, my)):
+            print("Box 1,", self.answerBox1[1], ",", self.checkAnswer(self.answerBox1[1]))
+            return [self.checkAnswer(self.answerBox1[1]), 0]
+        if self.answerBox2[0].collidepoint((mx, my)):
+            print("Box 2,", self.answerBox2[1], ",", self.checkAnswer(self.answerBox2[1]))
+            return [self.checkAnswer(self.answerBox2[1]), 1]
+        if self.answerBox3[0].collidepoint((mx, my)):
+            print("Box 3,", self.answerBox3[1], ",", self.checkAnswer(self.answerBox3[1]))
+            return [self.checkAnswer(self.answerBox3[1]), 2]
+        if self.answerBox4[0].collidepoint((mx, my)):
+            print("Box 4,", self.answerBox4[1], ",", self.checkAnswer(self.answerBox4[1]))
+            return [self.checkAnswer(self.answerBox4[1]), 3]
 
     def display(self, screen):
         #Width and height of the game window
         w, h = pygame.display.get_surface().get_size()
         #Draw the box with the question
-        self.drawTextBox(screen, w / 2, 70, 500, 100, self.question)
+        self.drawTextBox(screen, w / 2, 70, 500, 100, (255, 255, 255), self.question)
         #Draw the 4 available options
-        self.answerBox1 = self.drawTextBox(self.screen, w / 2 - 150, 155, 280, 50, self.answer1)
-        self.answerBox2 = self.drawTextBox(self.screen, w / 2 + 150, 155, 280, 50, self.answer2)
-        self.answerBox3 = self.drawTextBox(self.screen, w / 2 - 150, 220, 280, 50, self.answer3)
-        self.answerBox4 = self.drawTextBox(self.screen, w / 2 + 150, 220, 280, 50, self.answer4)
-        self.isClicked()
+        self.answerBox1 = self.drawTextBox(self.screen, w / 2 - 150, 155, 280, 50, (255, 255, 255), self.answer1)
+        self.answerBox2 = self.drawTextBox(self.screen, w / 2 + 150, 155, 280, 50, (255, 255, 255), self.answer2)
+        self.answerBox3 = self.drawTextBox(self.screen, w / 2 - 150, 220, 280, 50, (255, 255, 255), self.answer3)
+        self.answerBox4 = self.drawTextBox(self.screen, w / 2 + 150, 220, 280, 50, (255, 255, 255), self.answer4)
+        #self.isClicked()
         
     #isClicked() return whether or not the mousebutton is down right now
         #on one of the answers and if it is also return which answer was click
