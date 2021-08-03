@@ -38,7 +38,7 @@ pygame.init()
 
 def main():
     global count, language, level, scene
-    screen = pygame.display.set_mode([960, 540], RESIZABLE)
+    screen = pygame.display.set_mode([1280, 720])
     w, h = pygame.display.get_surface().get_size()
     # Set the background and adjust its size
     background = pygame.image.load('menuBackground.png')
@@ -159,7 +159,7 @@ def main():
         elif scene == "options":
             options(screen, background)
         elif scene == "pythonGame":
-            pythonGame(screen, background, pythonEnemies)
+            pythonGame(screen, background, player, pythonEnemies)
         elif scene == "javaGame":
             javaGame(screen, background, javaEnemies)
         elif scene == "battle":
@@ -231,8 +231,8 @@ def drawTextBox(screen, x, y, width, height, text=''):
 
 def pause(screen):
     global scene, language
-    SCREEN_WIDTH = 1600
-    SCREEN_HEIGHT = 900
+    SCREEN_WIDTH = 1280
+    SCREEN_HEIGHT = 720
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
     background_img = pygame.image.load('images/mainbackground.png')
@@ -304,8 +304,8 @@ def pause(screen):
 def gameOver(screen):
     global scene
 
-    SCREEN_WIDTH = 1600
-    SCREEN_HEIGHT = 900
+    SCREEN_WIDTH = 1280
+    SCREEN_HEIGHT = 720
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
     background_img = pygame.image.load('images/mainbackground.png')
@@ -334,7 +334,8 @@ def gameOver(screen):
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if button_menu_collide.collidepoint((mx, my)):
-                    main()
+                    scene = "mainMenu"
+                    return True
                 if button_exit_collide.collidepoint((mx, my)):
                     quit()
 
@@ -564,7 +565,7 @@ def options(screen, background):
 
 
 
-def pythonGame(screen, background, pythonEnemies):
+def pythonGame(screen, background, player, pythonEnemies):
     global scene, level, count
     w, h = pygame.display.get_surface().get_size()
     background = pygame.image.load('menuBackground.png')
@@ -621,6 +622,8 @@ def pythonGame(screen, background, pythonEnemies):
                         level = i
                         #Make sure the enemy has full hp
                         pythonEnemies[level].health = pythonEnemies[level].maxHealth
+                        #Make sure the player has full hp
+                        player.health = player.maxHealth
 
 
 def javaGame(screen, background, pythonEnemies):
@@ -749,6 +752,7 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
                     #If its wrong flash red and hurt the player
                     print(player.health)
                     player.takeDamage(10)
+                    #
                     print(player.health)
                     #If the player runs out of hp switch to the game over scene
                     if player.health <= 0:
@@ -873,7 +877,7 @@ class Slider():
     def draw(self):
         """ Combination of static and dynamic graphics in a copy of
     the basic slide surface"""
-        screen = pygame.display.set_mode([960, 540], RESIZABLE)
+        screen = pygame.display.set_mode([1280, 720])
         # static
         surf = self.surf.copy()
 
