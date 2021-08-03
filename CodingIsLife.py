@@ -1,7 +1,7 @@
-import os, pygame, arcade, spritesheet, entity, button, dropDown, random
+import os, pygame, arcade, spritesheet, entity, button, dropDown, question, questionList, health, random
+from pygame.locals import *
 # from tkinter import *
 # import pyrebase
-from pygame.locals import *
 # from kivy.clock import Clock
 # from kivy.core.audio import SoundLoader
 # from kivy.properties import ObjectProperty
@@ -52,7 +52,6 @@ def draw_text(text, font, color, surface, x, y):
     textrect.center = (x, y)
     surface.blit(textobj, textrect)
 
-
 # Draw a box with rounded edges centered at x,y
 def drawTextBox(screen, x, y, width, height, text=''):
     thickness = 4
@@ -83,47 +82,7 @@ def drawTextBox(screen, x, y, width, height, text=''):
     # Return the rect object for collision detection
     return (boxRect, text)
 
-
 def main():
-    class health:
-        def __init__(self):
-            super().__init__()
-            self.current_health = 200
-            self.maximum_health = 999
-            self.health_bar_length = 150
-            self.health_ratio = self.maximum_health / self.health_bar_length
-
-        def update(self):
-            self.basic_health()
-
-        def take_damage(self, amount):
-            if self.current_health > 0:
-                self.current_health -= amount
-            if self.current_health <= 0:
-                self.current_health = 0
-
-        def get_health(self, amount):
-            if self.current_health < self.maximum_health:
-                self.current_health += amount
-            if self.current_health >= self.maximum_health:
-                self.current_health = self.maximum_health
-
-        def basic_health(self):
-            pygame.draw.rect(screen, (255, 0, 0), (10, 10, self.current_health / self.health_ratio, 25))
-            pygame.draw.rect(screen, (255, 255, 255), (10, 10, self.health_bar_length, 25), 4)
-            font = pygame.font.Font(None, 36)
-            current_text = str(self.current_health)
-            current = font.render(current_text, False, (0, 0, 0))
-            screen.blit(current, (10, 40))
-
-            slash = font.render('/', False, (0, 0, 0))
-            screen.blit(slash, (55, 40))
-
-            max_text = str(self.maximum_health)
-            max = font.render(max_text, False, (0, 0, 0))
-            screen.blit(max, (68, 40))
-
-
     global count, language, level, scene
     screen = pygame.display.set_mode([960, 540], RESIZABLE)
     w, h = pygame.display.get_surface().get_size()
@@ -135,8 +94,8 @@ def main():
     pygame.display.set_caption("Coding Is Life")
 
     # player health system
-    p_HP = health()
-    e_HP = health()
+    p_HP = health.health()
+    e_HP = health.health()
 
     # Create the players entity object
     player = entity.Entity(50, screen.get_height() / 2, 6, "assets/dinos/DinoBlueIdle.png", 4,
@@ -175,21 +134,22 @@ def main():
         entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/Ghost/Idle.png", 10,
                       "assets/enemies/Ghost/Moving.png", 10, "assets/enemies/Ghost/Hit.png", 5))
     # Create a new question class rather than using an array
-    pythonQuestions = [
-        ['What is the value of x after the following statements?\nx = 10\ny=2\nx = x + y', '12', '10', '2', '102'],
-        ['A variable can hold more than one value.\nTrue or False?', 'False', 'True'],
-        ['Which of the following variables holds a string?', 'z = \'python\'', 'x = True', 'y = 7.29'],
-        ['Which of the following variable names (identifiers) is invalid?', '9lives', '_cat4', 'meowtime',
-         'number_of_kittens'],
-        ['Is x + y = 2 + 5 a valid assignment statement?', 'Invalid', 'Valid'],
-        ['Which of the following is an invalid assignment statement?', 'x + 3 = 10', 'x = 4', 'x = y', 'x = y + 4'],
-        ['What is the value of sum after the following statements?\nx = 10\nsum = x + 20', '30', '10', '20'],
-        ['Which of the following is not a numeric data type?', 'boolean', 'int', 'float', 'long'],
-        [
-            'Given the following assignments, which of the following is a valid operation?\ntext = \'some words\'\nletter = \'c\'\nnumber = 27\ndigits = 9000',
-            'number + digits', 'text + letter', 'number + text', 'letter + digits'],
-        ['What will bee the output after following statements?\nx = \'Hello\'\ny = \'world!\'\nprint(x, y)',
-         'Hello world!', 'Helloworld!', 'Hello, world!', 'Hello,world!']]
+    pythonQuestions = []
+    pythonQuestions.append(question.Question(screen, 'What is the value of x after the following statements?\nx = 10\ny=2\nx = x + y','12', ['10','2','102']))
+    pythonQuestions.append(question.Question(screen, 'What is the value of sum after the following statements?\nx = 10\nsum = x + 20','30', ['10','20']))
+    pythonQuestions.append(question.Question(screen, 'A variable can hold more than one value.\nTrue or False?','False', ['True']))
+    pythonQuestions.append(question.Question(screen, 'Which of the following variables holds a string?','x = \'python\'', ['z = w','w = True','y = 7.29']))
+    pythonQuestions.append(question.Question(screen, 'Which of the following variable names (identifiers) is invalid?','9lives', ['_cat4','meowtime','number_of_kittens']))
+    pythonQuestions.append(question.Question(screen, 'Is x + y = 2 + 5 a valid assignment statement?','Invalid', ['Valid']))
+    pythonQuestions.append(question.Question(screen, 'Which of the following is an invalid assignment statement?','x + 3 = 10',['x = 4','x = y','x = y + 4']))
+    pythonQuestions.append(question.Question(screen, 'Which of the following is not a numeric data type?','boolean',['int','float','long']))
+    pythonQuestions.append(question.Question(screen, 'Given the following assignments, which of the following is a valid operation?\ntext = \'some words\'\nletter = \'c\'\nnumber = 27\ndigits = 9000',
+                                             'number + digits',['text + letter','number + text','letter + digits']))
+    pythonQuestions.append(question.Question(screen, 'What will be the output after following statements?\nx = \'Hello\'\ny = \'world!\'\nprint(x, y)','Hello world!', ['Helloworld!','Hello,world!','Hello, world!']))
+    #Shuffle the list so that they don't show up in the same order
+    random.shuffle(pythonQuestions)
+    #question.Question(screen, question,answer, [wrong,wrong,wrong])
+
     # Need to load each background into this array
     pythonBackgrounds = [
         'images/bg1/l1.jpg',
@@ -203,10 +163,9 @@ def main():
         'images/bg1/l17.jpg',
         'images/bg1/l16.jpg'
     ]
-
+    
     # Main game loop
     while True:
-
         count += 1
         screen.fill((50, 50, 50))
         screen.blit(background, (0, 0))
@@ -247,8 +206,8 @@ def main():
             if language == "python":
                 # Might need to use the returned values from battle when dealing with hp, not sure atm
                 battleReturn = battle(screen, level, player, pythonEnemies, pythonQuestions, pythonBackgrounds)
-                p_HP.update()
-                p_HP.basic_health()
+                p_HP.update(screen)
+                p_HP.basic_health(screen)
                 # test hp function
                 for event in pygame.event.get():
                     if event.type == KEYDOWN:
@@ -681,17 +640,10 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
     screen.blit(menubutton, (w - 60, 10))
     button_1 = pygame.Rect(w - 60, 10, 50, 50)
 
-    questionDisplayOrder = questionList[:]
-    random.shuffle(questionDisplayOrder)
     questionFont = pygame.font.SysFont(None, 50)
     statementsFont = pygame.font.Font("consolas.ttf", 30)
 
-    drawTextBox(screen, w / 2, 70, 500, 100, "Big box test with a lot of text\nand also a\ncouple of new lines")
-
-    drawTextBox(screen, w / 2 - 150, 155, 280, 50, "Medium box test for answers")
-    drawTextBox(screen, w / 2 + 150, 155, 280, 50, "Medium box test for answers")
-    drawTextBox(screen, w / 2 - 150, 220, 280, 50, "Medium box test for answers")
-    drawTextBox(screen, w / 2 + 150, 220, 280, 50, "Medium box test for answers")
+    questionList[0].display(screen)
 
     # Event handling
     for event in pygame.event.get():
@@ -719,14 +671,6 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
             if button_1.collidepoint((mx, my)):
                 scene = "pause"
                 return True
-            if answerBox1[0].collidepoint((mx, my)):
-                print("Box 1,", answerBox1[1])
-            if answerBox2[0].collidepoint((mx, my)):
-                print("Box 2,", answerBox2[1])
-            if answerBox3[0].collidepoint((mx, my)):
-                print("Box 3,", answerBox3[1])
-            if answerBox4[0].collidepoint((mx, my)):
-                print("Box 4,", answerBox4[1])
 
     # Display player, enemy, HUD
     # Check for events
@@ -743,8 +687,8 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
     ######################################
 
     # Display both sprites on the screen
-    screen.blit(player.display(screen, .1, phase, fps), (player.x, player.y))
-    screen.blit(enemyList[level].display(screen, .1, phase, fps), (enemyList[level].x, enemyList[level].y))
+    screen.blit(player.display(screen, .5, phase, fps), (player.x, player.y))
+    screen.blit(enemyList[level].display(screen, .5, phase, fps), (enemyList[level].x, enemyList[level].y))
 
     # Return the updated player and enemy so that any of the changes made this frame will maintain
     return (player, enemyList)
