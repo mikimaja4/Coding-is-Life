@@ -323,8 +323,8 @@ def gameOver(screen):
     run = True
     while run:
 
-        button_menu_collide = pygame.Rect(SCREEN_WIDTH / 2 - 375, SCREEN_HEIGHT / 2 - 75, 350, 150)
-        button_exit_collide = pygame.Rect(SCREEN_WIDTH / 2 + 25, SCREEN_HEIGHT / 2 - 75, 350, 150)
+        button_menu_collide = pygame.Rect(SCREEN_WIDTH / 2 - 375, SCREEN_HEIGHT / 2 + 30, 350, 150)
+        button_exit_collide = pygame.Rect(SCREEN_WIDTH / 2 + 25, SCREEN_HEIGHT / 2 +30 , 350, 150)
         mx, my = pygame.mouse.get_pos()
 
         for event in pygame.event.get():
