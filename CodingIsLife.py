@@ -167,8 +167,8 @@ def main():
             if language == "python":
                 # Might need to use the returned values from battle when dealing with hp, not sure atm
                 battleReturn = battle(screen, level, player, pythonEnemies, pythonQuestions, pythonBackgrounds)
-                p_HP.update(screen)
-                p_HP.basic_health(screen)
+                #p_HP.update(screen)
+                #p_HP.basic_health(screen)
                 # test hp function
                 for event in pygame.event.get():
                     if event.type == KEYDOWN:
@@ -698,8 +698,37 @@ def javaGame(screen, background, pythonEnemies):
                         javaEnemies[level].health = javaEnemies[level].maxHealth
 
 
+def drawPHealth(character, screen):
+    health_bar_length = 150
+    pygame.draw.rect(screen, (255, 0, 0), (10, 10, character.health / (character.maxHealth / health_bar_length), 25))
+    pygame.draw.rect(screen, (255, 255, 255), (10, 10, health_bar_length, 25), 4)
+    font = pygame.font.Font(None, 36)
+    current_text = str(character.health)
+    current = font.render(current_text, False, (0, 0, 0))
+    screen.blit(current, (10, 40))
 
+    slash = font.render('/', False, (0, 0, 0))
+    screen.blit(slash, (55, 40))
 
+    max_text = str(character.maxHealth)
+    max_text = font.render(max_text, False, (0, 0, 0))
+    screen.blit(max_text, (68, 40))
+
+def drawEHealth(character, screen):
+    health_bar_length = 150
+    pygame.draw.rect(screen, (255, 0, 0), (1050, 10, character.health / (character.maxHealth / health_bar_length), 25))
+    pygame.draw.rect(screen, (255, 255, 255), (1050, 10, health_bar_length, 25), 4)
+    font = pygame.font.Font(None, 36)
+    current_text = str(character.health)
+    current = font.render(current_text, False, (0, 0, 0))
+    screen.blit(current, (1060, 40))
+
+    slash = font.render('/', False, (0, 0, 0))
+    screen.blit(slash, (1105, 40))
+
+    max_text = str(character.maxHealth)
+    max_text = font.render(max_text, False, (0, 0, 0))
+    screen.blit(max_text, (1118, 40))
 
 def battle(screen, level, player, enemyList, questionList, backgroundList):
     global scene, fps
@@ -722,6 +751,11 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
     statementsFont = pygame.font.Font("consolas.ttf", 30)
 
     questionList.currentQuestion.display(screen)
+
+    drawPHealth(player, screen)
+    drawEHealth(enemyList[level], screen)
+
+    #drawHealth(enemyList[level], screen)
 
     # Event handling
     for event in pygame.event.get():
