@@ -109,7 +109,7 @@ def main():
 
     # Need to load each background into this array
     pythonBackgrounds = [
-        'images/bg2/l1.png',
+        'images/bg1/l1.jpg',
         'images/bg1/bl11New.png',
         'images/bg2/l3.png',
         'images/bg2/l15.png',
