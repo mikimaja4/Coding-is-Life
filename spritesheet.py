@@ -24,3 +24,6 @@ class SpriteSheet():
         #Remove the black background
         image.set_colorkey((0,0,0))
         return image
+
+    def get_size(self):
+        return self.sheet.get_size()

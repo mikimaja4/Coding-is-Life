@@ -200,7 +200,7 @@ def draw_text(text, font, color, surface, x, y):
     surface.blit(textobj, textrect)
 
 # Draw a box with rounded edges centered at x,y
-def drawTextBox(screen, x, y, width, height, text=''):
+def drawTextBox(surface, x, y, width, height, text=''):
     thickness = 4
     roundness = 6
     # Create and color the surface for the box
@@ -211,7 +211,7 @@ def drawTextBox(screen, x, y, width, height, text=''):
     # Draw the outline on the input surface
     boxRect = pygame.Rect(x - width / 2 - thickness / 2, y - height / 2 - thickness / 2, width + thickness,
                           height + thickness)
-    pygame.draw.rect(screen, (0, 0, 0), boxRect, thickness, roundness)
+    pygame.draw.rect(surface, (0, 0, 0), boxRect, thickness, roundness)
     # Draw the text if provided
     questionFont = pygame.font.Font(None, 25)
 
@@ -223,7 +223,7 @@ def drawTextBox(screen, x, y, width, height, text=''):
         lines.append(lines[0])
         lines[0] = ''
     for line in lines:
-        draw_text(line, questionFont, (0, 0, 0), screen, x, y)
+        draw_text(line, questionFont, (0, 0, 0), surface, x, y)
         y += spacing
 
     # Return the rect object for collision detection
@@ -758,6 +758,10 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
                 scene = "pause"
                 return True
 
+
+    #If the enemy is close enough to the player deal damage every second
+    if enemyList[level].x <= enemyList[level].targetX and count%fps == 0:
+        player.takeDamage(1)
     #####TEST CODE TO SHOW ANIMATIONS####
     phases = ["idle", "moving", "hit"]
     phase = phases[int(count / 250 % 3)]
@@ -767,6 +771,8 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
     screen.blit(player.display(screen, .5, phase, fps), (player.x, player.y - player.scale * player.h - 30))
     screen.blit(enemyList[level].display(screen, .5, phase, fps),
                 (enemyList[level].x, enemyList[level].y - enemyList[level].scale * enemyList[level].h - 30))
+
+    draw_text(str(player.health), questionFont, (0,0,0), screen, w/2, h/2)
 
     # Return the updated player and enemy so that any of the changes made this frame will maintain
     return (player, enemyList)
