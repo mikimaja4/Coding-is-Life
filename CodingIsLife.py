@@ -320,6 +320,9 @@ def victory(screen, player):
 
     menu_img = pygame.image.load('images/MenuButton.png')
     menu = pygame.transform.scale(menu_img, (350, 150))
+    
+    player2 = entity.Entity(50, screen.get_height() + 25, 6, 0, "assets/dinos/DinoBlueIdleReverse.png", 4,
+                           "assets/dinos/DinoBlueMoving.png", 6, "assets/dinos/DinoBlueHit.png", 3)
 
     run = True
     while run:
@@ -346,6 +349,7 @@ def victory(screen, player):
         screen.blit(exit, (SCREEN_WIDTH / 2 + 25, SCREEN_HEIGHT / 2 - 75))
 
         screen.blit(player.display(screen, .2, 'idle', fps), (player.x, player.y - player.scale * player.h - 100))
+        screen.blit(player2.display(screen, .2, 'idle', fps), (1150 - player2.x, player2.y - player2.scale * player2.h - 100))
 
         pygame.display.update()
 
