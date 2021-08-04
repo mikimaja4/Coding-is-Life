@@ -480,7 +480,7 @@ def options(screen, background):
     mini = 0
     val= 0
     offset=[0,0]
-
+ #
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
 
