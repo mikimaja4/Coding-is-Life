@@ -109,16 +109,16 @@ def main():
 
     # Need to load each background into this array
     pythonBackgrounds = [
-        'images/bg1/l1.jpg',
+        'images/bg2/l1.png',
         'images/bg1/bl11New.png',
-        'images/bg1/l3.png',
-        'images/bg1/l4.png',
-        'images/bg1/l5.jpg',
-        'images/bg1/l6.jpg',
-        'images/bg1/l7.jpg',
-        'images/bg1/l8.jpg',
-        'images/bg1/l17.jpg',
-        'images/bg1/l16.jpg'
+        'images/bg2/l3.png',
+        'images/bg2/l4.png',
+        'images/bg2/l5.png',
+        'images/bg2/l6.png',
+        'images/bg2/l7.png',
+        'images/bg2/l8.png',
+        'images/bg2/l17.png',
+        'images/bg2/l16.png'
     ]
 
     javaEnemies = []
