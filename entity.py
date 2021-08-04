@@ -2,7 +2,7 @@ import pygame, spritesheet
 
 class Entity():
     #Input the spritesheet image location, number of frames in the spritesheet, pos, and scale
-    def __init__(self, x, y, scale, idleSheet, idleFrames, movingSheet, movingFrames, hitSheet, hitFrames):
+    def __init__(self, x, y, scale, moveSpeed, idleSheet, idleFrames, movingSheet, movingFrames, hitSheet, hitFrames):
         self.idle = spritesheet.SpriteSheet(pygame.image.load(idleSheet).convert_alpha())
         self.idleFrames = idleFrames
         
@@ -18,19 +18,27 @@ class Entity():
         #What state the entity was in last frame
         self.prevState = "idle"
         self.scale = scale
-        
-        self.x = x
-        self.y = y
-        #Percent of screen moved per second (between 0 and 1)
-        #Default to 0 for the player
-        self.moveSpeed = 0
 
-        self.health = 100
+        self.updateSize()
+        self.x, self.startX = x, x
+        self.y, self.startY = y + self.h, y + self.h
+        #Update the width and height of a frame
+        self.updateSize()
+        #Time in seconds to reach the player
+        #NOT ACCURATE because of lag i think
+        self.moveSpeed = moveSpeed
+        #Trying to account for the lag I think
+        self.moveSpeed /= 3
+
+        self.health = 150
         #Maximum number of health points the entity can have
         self.maxHealth = 100
 
 
     def display(self, screen, speed, state, fps):
+        #The x position of the target to move towards
+        targetX = 150
+        self.updateSize()
         self.state = state
         #Check if the state changed since last frame
         if(self.state != self.prevState):
@@ -45,9 +53,10 @@ class Entity():
             frame = self.moving.getImage(int(self.count) % self.movingFrames, self.movingFrames, self.scale)
         elif self.state == "hit":
             frame = self.hit.getImage(int(self.count) % self.hitFrames, self.hitFrames, self.scale)
-        self.move(self.x - (w * self.moveSpeed)/fps, self.y)
-        self.count += 1 * speed
-
+        if(self.moveSpeed > 0 and self.x > targetX):
+            self.move(self.x - (self.startX - targetX)/(fps * self.moveSpeed), self.y)
+        self.count += (1 * speed)
+#move  pixels per second
         return frame
         
     def move(self, newX, newY):
@@ -65,3 +74,15 @@ class Entity():
             self.health = self.maxHealht
         else:
             self.health += health
+
+    def updateSize(self):
+        #Update the width and height of an individual frame
+        if self.state == "idle":
+            self.w, self.h = self.idle.get_size()
+            self.w /= self.idleFrames
+        elif self.state == "moving":
+            self.w, self.h = self.idle.get_size()
+            self.w /= self.movingFrames
+        elif self.state == "hit":
+            self.w, self.h = self.idle.get_size()
+            self.w /= self.hitFrames

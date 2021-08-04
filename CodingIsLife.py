@@ -37,7 +37,7 @@ os.environ['SDL_VIDEO_WINDOW_POS'] = '%i,%i' % (pos_x, pos_y)  # Set pygame wind
 pygame.init()
 
 def main():
-    global count, language, level, scene
+    global count, language, level, scene, fps
     screen = pygame.display.set_mode([1280, 720])
     w, h = pygame.display.get_surface().get_size()
     # Set the background and adjust its size
@@ -52,41 +52,41 @@ def main():
     e_HP = health.health()
 
     # Create the players entity object
-    player = entity.Entity(50, screen.get_height() / 2, 6, "assets/dinos/DinoBlueIdle.png", 4,
+    player = entity.Entity(50, screen.get_height() + 25, 6, 0, "assets/dinos/DinoBlueIdle.png", 4,
                            "assets/dinos/DinoBlueMoving.png", 6, "assets/dinos/DinoBlueHit.png", 3)
     # Create the enemy entity objects
     pythonEnemies = []
     pythonEnemies.append(
-        entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/AngryPig/Idle.png", 9,
-                      "assets/enemies/AngryPig/Moving.png", 16, "assets/enemies/AngryPig/Hit.png", 5))
+        entity.Entity(screen.get_width() - 200, screen.get_height(), 6, 10, "assets/enemies/Mushroom/Idle.png", 14,#
+                      "assets/enemies/Mushroom/Moving.png", 16, "assets/enemies/Mushroom/Hit.png", 5))
     pythonEnemies.append(
-        entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/Bat/Idle.png", 12,
-                      "assets/enemies/Bat/Moving.png", 7, "assets/enemies/Bat/Hit.png", 5))
+        entity.Entity(screen.get_width() - 200, screen.get_height(), 6, 10, "assets/enemies/Radish/Idle.png", 6,#
+                      "assets/enemies/Radish/Moving.png", 12, "assets/enemies/Radish/Hit.png", 5))
     pythonEnemies.append(
-        entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/Bee/Idle.png", 6,
-                      "assets/enemies/Bee/Moving.png", 6, "assets/enemies/Bee/Hit.png", 5))
+        entity.Entity(screen.get_width() - 200, screen.get_height(), 6, 10, "assets/enemies/Rocks/Idle.png", 14,#
+                      "assets/enemies/Rocks/Moving.png", 14, "assets/enemies/Rocks/Hit.png", 5))
     pythonEnemies.append(
-        entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/BlueBird/Idle.png", 9,
-                      "assets/enemies/BlueBird/Moving.png", 9, "assets/enemies/BlueBird/Hit.png", 5))
-    pythonEnemies.append(
-        entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/Bunny/Idle.png", 8,
-                      "assets/enemies/Bunny/Moving.png", 12, "assets/enemies/Bunny/Hit.png", 5))
-    # For some reason the Chameleon gets placed an additional ~200 pixels right and idk why
-    pythonEnemies.append(
-        entity.Entity(screen.get_width() - 400, screen.get_height() / 2, 6, "assets/enemies/Chameleon/Idle.png", 13,
-                      "assets/enemies/Chameleon/Moving.png", 8, "assets/enemies/Chameleon/Hit.png", 5))
-    pythonEnemies.append(
-        entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/Chicken/Idle.png", 13,
+        entity.Entity(screen.get_width() - 200, screen.get_height(), 6, 10, "assets/enemies/Chicken/Idle.png", 13,#
                       "assets/enemies/Chicken/Moving.png", 14, "assets/enemies/Chicken/Hit.png", 5))
     pythonEnemies.append(
-        entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/Duck/Idle.png", 10,
+        entity.Entity(screen.get_width() - 200, screen.get_height(), 6, 10, "assets/enemies/Duck/Idle.png", 10,#
                       "assets/enemies/Duck/Moving.png", 10, "assets/enemies/Duck/Hit.png", 5))
     pythonEnemies.append(
-        entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/FatBird/Idle.png", 8,
-                      "assets/enemies/FatBird/Moving.png", 8, "assets/enemies/FatBird/Hit.png", 5))
+        entity.Entity(screen.get_width() - 200, screen.get_height(), 6, 10, "assets/enemies/Rino/Idle.png", 11,#
+                      "assets/enemies/Rino/Moving.png", 6, "assets/enemies/Rino/Hit.png", 5))
     pythonEnemies.append(
-        entity.Entity(screen.get_width() - 200, screen.get_height() / 2, 6, "assets/enemies/Ghost/Idle.png", 10,
+        entity.Entity(screen.get_width() - 200, screen.get_height(), 6, 10, "assets/enemies/Slime/Idle.png", 10,#
+                      "assets/enemies/Slime/Moving.png", 10, "assets/enemies/Slime/Hit.png", 5))
+    pythonEnemies.append(
+        entity.Entity(screen.get_width() - 200, screen.get_height(), 6, 10, "assets/enemies/AngryPig/Idle.png", 9,#
+                      "assets/enemies/AngryPig/Moving.png", 16, "assets/enemies/AngryPig/Hit.png", 5))
+    pythonEnemies.append(
+        entity.Entity(screen.get_width() - 200, screen.get_height(), 6, 10, "assets/enemies/Skull/Idle.png", 8,
+                      "assets/enemies/Skull/Moving.png", 8, "assets/enemies/Skull/Hit.png", 5))
+    pythonEnemies.append(
+        entity.Entity(screen.get_width() - 200, screen.get_height(), 6, 10, "assets/enemies/Ghost/Idle.png", 10,#
                       "assets/enemies/Ghost/Moving.png", 10, "assets/enemies/Ghost/Hit.png", 5))
+    
     # Create a new question class rather than using an array
     pythonQuestions = []
     pythonQuestions.append(question.Question(screen, 'What is the value of x after the following statements?\nx = 10\ny=2\nx = x + y','12', ['10','2','102']))
@@ -323,8 +323,8 @@ def gameOver(screen):
     run = True
     while run:
 
-        button_menu_collide = pygame.Rect(SCREEN_WIDTH / 2 - 375, SCREEN_HEIGHT / 2 + 30, 350, 150)
-        button_exit_collide = pygame.Rect(SCREEN_WIDTH / 2 + 25, SCREEN_HEIGHT / 2 +30 , 350, 150)
+        button_menu_collide = pygame.Rect(SCREEN_WIDTH / 2 - 375, SCREEN_HEIGHT / 2 - 75, 350, 150)
+        button_exit_collide = pygame.Rect(SCREEN_WIDTH / 2 + 25, SCREEN_HEIGHT / 2 - 75, 350, 150)
         mx, my = pygame.mouse.get_pos()
 
         for event in pygame.event.get():
@@ -341,8 +341,8 @@ def gameOver(screen):
 
         screen.blit(background, (0, 0))
         screen.blit(gameover, (SCREEN_WIDTH / 2 - 500, SCREEN_HEIGHT / 2 - 350))
-        screen.blit(menu, (SCREEN_WIDTH / 2 - 375, SCREEN_HEIGHT / 2 +30))
-        screen.blit(exit, (SCREEN_WIDTH / 2 + 25, SCREEN_HEIGHT / 2 +30))
+        screen.blit(menu, (SCREEN_WIDTH / 2 - 375, SCREEN_HEIGHT / 2 - 75))
+        screen.blit(exit, (SCREEN_WIDTH / 2 + 25, SCREEN_HEIGHT / 2 - 75))
 
         pygame.display.update()
 
@@ -622,8 +622,11 @@ def pythonGame(screen, background, player, pythonEnemies):
                         level = i
                         #Make sure the enemy has full hp
                         pythonEnemies[level].health = pythonEnemies[level].maxHealth
+                        #Reset enemy position
+                        pythonEnemies[level].x = pythonEnemies[level].startX
                         #Make sure the player has full hp
                         player.health = player.maxHealth
+                        
 
 
 def javaGame(screen, background, pythonEnemies):
@@ -689,12 +692,13 @@ def javaGame(screen, background, pythonEnemies):
 
 
 def battle(screen, level, player, enemyList, questionList, backgroundList):
-    global scene
+    global scene, fps
     screen.fill((50, 50, 50))
     mx, my = pygame.mouse.get_pos()
     w, h = pygame.display.get_surface().get_size()
     # Load and display the background
-    background = pygame.image.load(backgroundList[level])
+    #background = pygame.image.load(backgroundList[level])
+    background = pygame.image.load('menuBackground.png')
     background = pygame.transform.scale(background, (w, h))
     screen.blit(background, (0, 0))
 
@@ -711,16 +715,6 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
 
     # Event handling
     for event in pygame.event.get():
-        if event.type == pygame.VIDEORESIZE:
-            w, h = pygame.display.get_surface().get_size()
-            # Adjust the size of the background
-            background = pygame.image.load('menuBackground.png')
-            background = pygame.transform.scale(background, (w, h))
-            # Adjust the player position, x is constant
-            player.y = screen.get_height() / 2
-            # Adjust the position of the enemy, both x and y
-            enemyList[level].x = screen.get_width() - 200
-            enemyList[level].y = screen.get_height() / 2
         if event.type == QUIT:
             pygame.quit()
             quit()
@@ -764,23 +758,15 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
                 scene = "pause"
                 return True
 
-    # Display player, enemy, HUD
-    # Check for events
-    # Check if correct is hit
-    # Manage HP
-    # Check if level completed
-
-    # Moving the enemy
-
     #####TEST CODE TO SHOW ANIMATIONS####
     phases = ["idle", "moving", "hit"]
     phase = phases[int(count / 250 % 3)]
-
     ######################################
 
     # Display both sprites on the screen
-    screen.blit(player.display(screen, .5, phase, fps), (player.x, player.y))
-    screen.blit(enemyList[level].display(screen, .5, phase, fps), (enemyList[level].x, enemyList[level].y))
+    screen.blit(player.display(screen, .5, phase, fps), (player.x, player.y - player.scale * player.h - 30))
+    screen.blit(enemyList[level].display(screen, .5, phase, fps),
+                (enemyList[level].x, enemyList[level].y - enemyList[level].scale * enemyList[level].h - 30))
 
     # Return the updated player and enemy so that any of the changes made this frame will maintain
     return (player, enemyList)
