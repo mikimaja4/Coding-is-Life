@@ -22,6 +22,8 @@ class Entity():
         self.updateSize()
         self.x, self.startX = x, x
         self.y, self.startY = y + self.h, y + self.h
+        #The x position of the target to move towards
+        self.targetX = 150
         #Update the width and height of a frame
         self.updateSize()
         #Time in seconds to reach the player
@@ -36,8 +38,6 @@ class Entity():
 
 
     def display(self, screen, speed, state, fps):
-        #The x position of the target to move towards
-        targetX = 150
         self.updateSize()
         self.state = state
         #Check if the state changed since last frame
@@ -53,8 +53,8 @@ class Entity():
             frame = self.moving.getImage(int(self.count) % self.movingFrames, self.movingFrames, self.scale)
         elif self.state == "hit":
             frame = self.hit.getImage(int(self.count) % self.hitFrames, self.hitFrames, self.scale)
-        if(self.moveSpeed > 0 and self.x > targetX):
-            self.move(self.x - (self.startX - targetX)/(fps * self.moveSpeed), self.y)
+        if(self.moveSpeed > 0 and self.x > self.targetX):
+            self.move(self.x - (self.startX - self.targetX)/(fps * self.moveSpeed), self.y)
         self.count += (1 * speed)
 #move  pixels per second
         return frame
