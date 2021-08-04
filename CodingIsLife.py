@@ -778,8 +778,8 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
     ######################################
 
     # Display both sprites on the screen
-    screen.blit(player.display(screen, .5, phase, fps), (player.x, player.y - player.scale * player.h - 30))
-    screen.blit(enemyList[level].display(screen, .5, phase, fps),
+    screen.blit(player.display(screen, .2, phase, fps), (player.x, player.y - player.scale * player.h - 30))
+    screen.blit(enemyList[level].display(screen, .3, phase, fps),
                 (enemyList[level].x, enemyList[level].y - enemyList[level].scale * enemyList[level].h - 30))
 
     draw_text(str(player.health), questionFont, (0,0,0), screen, w/2, h/2)
