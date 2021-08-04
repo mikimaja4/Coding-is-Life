@@ -110,7 +110,7 @@ def main():
     # Need to load each background into this array
     pythonBackgrounds = [
         'images/bg1/l1.jpg',
-        'images/bg1/l11.jpg',
+        'images/bg1/bl11New.png',
         'images/bg1/l3.png',
         'images/bg1/l4.png',
         'images/bg1/l5.jpg',
@@ -479,6 +479,7 @@ def options(screen, background):
     maxi = 100  # maximum at slider position right
     mini = 0
     val= 0
+    offset=[0,0]
 
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
@@ -536,6 +537,8 @@ def options(screen, background):
     surf.blit(button_surf, button_rect)
     button_rect.move_ip(mx, my)  # move of button box to correct screen position
 
+    loc=[mx, my]
+    clicked= False
     hit = True
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -551,7 +554,14 @@ def options(screen, background):
                     scene = "mainMenu"
                     return True
                 if musicVolumeButton.collidepoint((mx,my)):
-                    pass
+                    clicked = True
+                    while clicked == True:
+                        musicVolumeButton = pygame.draw.circle(screen, BLACK, (mx,my), 7, 0)
+                    #musicVolumeButton = pygame.draw.circle(screen, BLACK, (loc[0] + offset [0], loc[1] + offset[1]), 7, 0)
+                    #musicVolumeButton.move((loc[0], loc[1] ))
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    clicked = False
+                        #print(mx,my)
                 if fxVolumeButton.collidepoint(mx,my):
                     pass
         elif event.type == pygame.MOUSEBUTTONUP:
@@ -697,8 +707,8 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
     mx, my = pygame.mouse.get_pos()
     w, h = pygame.display.get_surface().get_size()
     # Load and display the background
-    #background = pygame.image.load(backgroundList[level])
-    background = pygame.image.load('menuBackground.png')
+    background = pygame.image.load(backgroundList[level])
+    #background = pygame.image.load('menuBackground.png')
     background = pygame.transform.scale(background, (w, h))
     screen.blit(background, (0, 0))
 
@@ -891,7 +901,6 @@ class Slider():
             self.val = self.mini
         if self.val > self.maxi:
             self.val = self.maxi
-
 
 if __name__ == '__main__':
     # GLOBAL VARIABLES
