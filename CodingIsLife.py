@@ -109,16 +109,16 @@ def main():
 
     # Need to load each background into this array
     pythonBackgrounds = [
-        'images/bg1/l1.jpg',
-        'images/bg1/bl11New.png',
-        'images/bg2/l3.png',
-        'images/bg2/l15.png',
-        'images/bg2/l14.png',
-        'images/bg2/l6.png',
-        'images/bg2/l7.png',
-        'images/bg2/l8.png',
-        'images/bg2/l17.png',
-        'images/bg2/l16.png'
+        'images/bg3/l3.jpg',
+        'images/bg3/l5.jpg',
+        'images/bg3/l1.jpg',
+        'images/bg3/l4.jpg',
+        'images/bg3/l2.png',
+        'images/bg3/l6.jpg',
+        'images/bg3/l7.jpg',
+        'images/bg3/l8.jpg',
+        'images/bg3/l9.jpg',
+        'images/bg3/l10.jpg'
     ]
 
     javaEnemies = []
@@ -180,6 +180,8 @@ def main():
             pause(screen)
         elif scene == "gameOver":
             gameOver(screen)
+        elif scene == "victory":
+            victory(screen, player)
 
         # Manage the fps and update the screen
         pygame.display.update()
@@ -300,6 +302,52 @@ def pause(screen):
 
         pygame.display.update()
 
+def victory(screen, player):
+    global scene
+
+    SCREEN_WIDTH = 1280
+    SCREEN_HEIGHT = 720
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+    background_img = pygame.image.load('images/mainbackground.png')
+    background = pygame.transform.scale(background_img, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
+    victory_img = pygame.image.load('images/Victory.png')
+    victory = pygame.transform.scale(victory_img, (1000, 200))
+
+    exit_img = pygame.image.load('images/ExitButton.png')
+    exit = pygame.transform.scale(exit_img, (350, 150))
+
+    menu_img = pygame.image.load('images/MenuButton.png')
+    menu = pygame.transform.scale(menu_img, (350, 150))
+
+    run = True
+    while run:
+
+        button_menu_collide = pygame.Rect(SCREEN_WIDTH / 2 - 375, SCREEN_HEIGHT / 2 - 75, 350, 150)
+        button_exit_collide = pygame.Rect(SCREEN_WIDTH / 2 + 25, SCREEN_HEIGHT / 2 - 75, 350, 150)
+        mx, my = pygame.mouse.get_pos()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if button_menu_collide.collidepoint((mx, my)):
+                    scene = "mainMenu"
+                    return True
+                if button_exit_collide.collidepoint((mx, my)):
+                    quit()
+
+        screen.blit(background, (0, 0))
+        screen.blit(victory, (SCREEN_WIDTH / 2 - 500, SCREEN_HEIGHT / 2 - 350))
+        screen.blit(menu, (SCREEN_WIDTH / 2 - 375, SCREEN_HEIGHT / 2 - 75))
+        screen.blit(exit, (SCREEN_WIDTH / 2 + 25, SCREEN_HEIGHT / 2 - 75))
+
+        screen.blit(player.display(screen, .2, 'idle', fps), (player.x, player.y - player.scale * player.h - 100))
+
+        pygame.display.update()
 
 def gameOver(screen):
     global scene
@@ -308,7 +356,7 @@ def gameOver(screen):
     SCREEN_HEIGHT = 720
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-    background_img = pygame.image.load('images/mainbackground.png')
+    background_img = pygame.image.load('images/GameOverBackground.jpg')
     background = pygame.transform.scale(background_img, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
     gameover_img = pygame.image.load('images/GameOver.png')
@@ -703,6 +751,7 @@ def drawPHealth(character, screen):
     pygame.draw.rect(screen, (255, 0, 0), (10, 10, character.health / (character.maxHealth / health_bar_length), 25))
     pygame.draw.rect(screen, (255, 255, 255), (10, 10, health_bar_length, 25), 4)
     font = pygame.font.Font(None, 36)
+
     current_text = str(character.health)
     current = font.render(current_text, False, (0, 0, 0))
     screen.blit(current, (10, 40))
@@ -782,8 +831,8 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
                     print(enemyList[level].health)
                     #If the enemies runs out of hp switch to the you win scene
                     if enemyList[level].health <= 0:
-                        #scene = ""
-                        #return True
+                        scene = "victory"
+                        return True
                         print("Battle Won!")
                    
                 else:
