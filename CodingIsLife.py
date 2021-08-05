@@ -48,10 +48,6 @@ def main():
     clock = pygame.time.Clock()
     pygame.display.set_caption("Coding Is Life")
 
-    # player health system
-    p_HP = health.health()
-    e_HP = health.health()
-
     # Create the players entity object
     player = entity.Entity(50, screen.get_height() + 25, 6, 0, "assets/dinos/DinoBlueIdle.png", 4,
                            "assets/dinos/DinoBlueMoving.png", 6, "assets/dinos/DinoBlueHit.png", 3)
