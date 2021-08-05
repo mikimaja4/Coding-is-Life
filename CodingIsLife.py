@@ -877,6 +877,7 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
             if not selection == None:
                 if selection[0]:
                     #If the answer is correct flash green on the box clicked on and hurt the enemy
+                    play('correct.wav', 0.5)
                     print("Enemy hit!")
                     enemyList[level].takeDamage(20)
                     enemyList[level].state = "hit"
@@ -891,6 +892,7 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
                    
                 else:
                     #If its wrong flash red and hurt the player
+                    play('painroar.wav', 0.5)
                     print("Player hit!")
                     player.takeDamage(10)
                     player.state = "hit"
