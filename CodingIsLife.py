@@ -542,9 +542,7 @@ def options(screen, background):
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
 
-    #draw_text('Options', titleFont, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 - 80)
-    #draw_text('Music', font, (255, 255, 255), screen, screen.get_width() / 2 - 120, screen.get_height() / 2 )
-    #draw_text('Sound Fx', font, (255, 255, 255), screen, screen.get_width() / 2 - 135, screen.get_height() / 2 +60)
+    draw_text('Options', titleFont, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 - 80)
     draw_text('Back', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 120)
 
     mx, my = pygame.mouse.get_pos()
@@ -558,12 +556,8 @@ def options(screen, background):
     speed = Slider("Speed", 50, 150, 10, 775)
 
     num = 0
-    draw_text('Options', titleFont, (255, 255, 255), screen, screen.get_width() / 2,
-                           screen.get_height() / 2 - 80)
-    #draw_text('Music', font, (255, 255, 255), screen, screen.get_width() / 2 - 120,
-                        #   screen.get_height() / 2)
-    #draw_text('Sound Fx', font, (255, 255, 255), screen, screen.get_width() / 2 - 135,
-                        #   screen.get_height() / 2 + 60)
+    draw_text('Options', titleFont, (255, 255, 255), screen, screen.get_width() / 2,screen.get_height() / 2 - 80)
+
     draw_text('Back', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 120)
 
     mx, my = pygame.mouse.get_pos()
@@ -596,7 +590,6 @@ def options(screen, background):
                 s.move()
 
         # Update screen
-        # screen.fill(BLACK)
         num += 2
 
         for s in slides:
@@ -604,10 +597,6 @@ def options(screen, background):
 
         pygame.display.flip()
         clock.tick(speed.val)
-
-
-#Todo impliment being able to move the circle and to have it adjust the volume
-
 
 
 def pythonGame(screen, background, player, pythonEnemies):
