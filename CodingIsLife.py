@@ -37,7 +37,7 @@ os.environ['SDL_VIDEO_WINDOW_POS'] = '%i,%i' % (pos_x, pos_y)  # Set pygame wind
 pygame.init()
 
 def main():
-    global count, language, level, scene, fps
+    global count, language, level, scene, fps, pythonLevelsUnlocked
     screen = pygame.display.set_mode([1280, 720])
     w, h = pygame.display.get_surface().get_size()
     # Set the background and adjust its size
@@ -123,6 +123,8 @@ def main():
     javaEnemies = []
     javaQuestions = []
     javaBackgrounds = []
+
+    pythonLevelsUnlocked = 1
     
     # Main game loop
     while True:
@@ -134,6 +136,10 @@ def main():
             if event.type == QUIT:
                 print("Quit")
                 return False
+            if event.type == KEYDOWN:
+                if event.key == 1073741911 or event.key == 61:
+                    pythonLevelsUnlocked = 10
+                    print("All python levels unlocked", pythonLevelsUnlocked)
             if event.type == pygame.VIDEORESIZE:
                 w, h = pygame.display.get_surface().get_size()
                 # Adjust the size of the background
@@ -166,15 +172,6 @@ def main():
             if language == "python":
                 # Might need to use the returned values from battle when dealing with hp, not sure atm
                 battleReturn = battle(screen, level, player, pythonEnemies, pythonQuestions, pythonBackgrounds)
-                #p_HP.update(screen)
-                #p_HP.basic_health(screen)
-                # test hp function
-                for event in pygame.event.get():
-                    if event.type == KEYDOWN:
-                        if event.key == K_z:
-                            p_HP.take_damage(200)
-                        elif event.key == K_x:
-                            p_HP.get_health(200)
         elif scene == "pause":
             pause(screen)
         elif scene == "gameOver":
@@ -627,7 +624,7 @@ def options(screen, background):
 
 
 def pythonGame(screen, background, player, pythonEnemies):
-    global scene, level, count
+    global scene, level, count, pythonLevelsUnlocked
     w, h = pygame.display.get_surface().get_size()
     background = pygame.image.load('menuBackground.png')
     background = pygame.transform.scale(background, (w, h))
@@ -640,15 +637,29 @@ def pythonGame(screen, background, player, pythonEnemies):
     draw_text('Levels', titleFont, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 - 150)
     levelButtons = []
     for i in range(5):
-        draw_text('Level ' + str((i + 1)), font, (255, 255, 255), screen,
+        #Fill the left side with levels that are available in white
+        if i < pythonLevelsUnlocked:
+            draw_text('Level ' + str((i + 1)), font, (255,255,255), screen,
+                      screen.get_width() / 2 - 50, screen.get_height() / 2 - 85 + (i * 30))
+        #Fill the left side with levels that are unavailable in grey
+        else:
+            draw_text('Level ' + str((i + 1)), font, (169,169,169), screen,
                   screen.get_width() / 2 - 50, screen.get_height() / 2 - 85 + (i * 30))
         # Create the rectangle for click detection of the current level
         newButton = pygame.Rect(0, 0, 50, 10)
         # Center the button in the correct spot
         newButton.center = (screen.get_width() / 2 - 50, screen.get_height() / 2 - 85 + (i * 30))
         levelButtons.append(newButton)
+
+
     for i in range(5):
-        draw_text('Level ' + str((i + 6)), font, (255, 255, 255), screen,
+        #Fill the right side with levels that are available in white
+        if i + 5 < pythonLevelsUnlocked:
+            draw_text('Level ' + str((i + 6)), font, (255,255,255), screen,
+                  screen.get_width() / 2 + 50, screen.get_height() / 2 - 85 + (i * 30))
+        #Fill the right side with levels that are unavailable in grey
+        else:
+            draw_text('Level ' + str((i + 6)), font, (169,169,169), screen,
                   screen.get_width() / 2 + 50, screen.get_height() / 2 - 85 + (i * 30))
         # Create the rectangle for click detection of the current level
         newButton = pygame.Rect(0, 0, 70, 15)
@@ -676,7 +687,7 @@ def pythonGame(screen, background, player, pythonEnemies):
                     # Check if any of the level buttons have been clicked
                 for i in range(len(levelButtons)):
                     # Also need to check if the level has been unlocked yet
-                    if levelButtons[i].collidepoint((mx, my)):
+                    if (levelButtons[i].collidepoint((mx, my)) and i < pythonLevelsUnlocked):
                         play('buttonClick.wav', 0.5)
                         scene = "battle"
                         language = "python"
@@ -783,7 +794,7 @@ def drawEHealth(character, screen):
     screen.blit(max_text, (1118, 40))
 
 def battle(screen, level, player, enemyList, questionList, backgroundList):
-    global scene, fps
+    global scene, fps, pythonLevelsUnlocked
     screen.fill((50, 50, 50))
     mx, my = pygame.mouse.get_pos()
     w, h = pygame.display.get_surface().get_size()
@@ -829,26 +840,27 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
             if not selection == None:
                 if selection[0]:
                     #If the answer is correct flash green on the box clicked on and hurt the enemy
-                    print(enemyList[level].health)
-                    enemyList[level].takeDamage(10)
+                    print("Enemy hit!")
+                    enemyList[level].takeDamage(20)
                     enemyList[level].state = "hit"
-                    print(enemyList[level].health)
                     #If the enemies runs out of hp switch to the you win scene
                     if enemyList[level].health <= 0:
                         scene = "victory"
-                        return True
+                        if level + 1 == pythonLevelsUnlocked:
+                            pythonLevelsUnlocked += 1
+                            print("Level unlocked!")
                         print("Battle Won!")
+                        return True
                    
                 else:
                     #If its wrong flash red and hurt the player
-                    print(player.health)
+                    print("Player hit!")
                     player.takeDamage(10)
                     player.state = "hit"
-                    #
-                    print(player.health)
                     #If the player runs out of hp switch to the game over scene
                     if player.health <= 0:
                         scene = "gameOver"
+                        print("Game Over!")
                         return True
                 #Switch to the next question whether or not it was correct
                 questionList.next()
@@ -859,8 +871,13 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
 
     #If the enemy is close enough to the player deal damage every second
     if enemyList[level].x <= enemyList[level].targetX and count%fps == 0:
-        player.takeDamage(1)
+        player.takeDamage(5)
         player.state = "hit"
+        #If the player runs out of hp switch to the game over scene
+        if player.health <= 0:
+            scene = "gameOver"
+            print("Game Over!")
+            return True
 
     # Display both sprites on the screen
     screen.blit(player.display(screen, .2, player.state, fps), (player.x, player.y - player.scale * player.h - 30))

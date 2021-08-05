@@ -46,6 +46,7 @@ class Entity():
         if(state != self.prevState):
             #If it did reset count to 0 so we dont miss and vital frame
             self.count = 0
+            self.hitCounter = 0
         self.prevState = self.state
         self.state = state
         #If the entity has been hit but hasnt finished their hit animation stay hit
@@ -54,11 +55,9 @@ class Entity():
         #If theyre at their target switch them to idle
         elif (self.x <= self.targetX):
             self.state = "idle"
-            self.hitCounter = 0
         #If theyre not at their target switch them to moving
         elif (self.x > self.targetX):
             self.state = "moving"
-            self.hitCounter = 0
         if self.state == "idle":
             frame = self.idle.getImage(int(self.count) % self.idleFrames, self.idleFrames, self.scale)
             #(self.count * speed) % self.idleFrames

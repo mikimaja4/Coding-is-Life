@@ -21,7 +21,7 @@ class Question:
         random.shuffle(self.allAnswers)
         self.answer1 = self.allAnswers[0]
         self.answer2 = self.allAnswers[1]
-        #If there was only one wrong answer passed dont leave the other two answers blank
+        #If there was only one wrong answer passed leave the other two answers blank
         if len(self.allAnswers) < 3:
             self.answer3 = ""
         else:
@@ -34,6 +34,11 @@ class Question:
         self.shown = False
         #Whether or not the question is animating a correct/incorrect guess
         self.animating = False
+
+        self.answerBox1 = None
+        self.answerBox2 = None
+        self.answerBox3 = None
+        self.answerBox4 = None
 
     # Draw a box with rounded edges centered at x,y
     def drawTextBox(self, screen, x, y, width, height, backgroundColor, text=''):
@@ -90,10 +95,10 @@ class Question:
         if self.answerBox2[0].collidepoint((mx, my)):
             print("Box 2,", self.answerBox2[1], ",", self.checkAnswer(self.answerBox2[1]))
             return [self.checkAnswer(self.answerBox2[1]), 1]
-        if self.answerBox3[0].collidepoint((mx, my)):
+        if self.answerBox3 and self.answerBox3[0].collidepoint((mx, my)):
             print("Box 3,", self.answerBox3[1], ",", self.checkAnswer(self.answerBox3[1]))
             return [self.checkAnswer(self.answerBox3[1]), 2]
-        if self.answerBox4[0].collidepoint((mx, my)):
+        if self.answerBox4 and self.answerBox4[0].collidepoint((mx, my)):
             print("Box 4,", self.answerBox4[1], ",", self.checkAnswer(self.answerBox4[1]))
             return [self.checkAnswer(self.answerBox4[1]), 3]
 
@@ -105,8 +110,16 @@ class Question:
         #Draw the 4 available options
         self.answerBox1 = self.drawTextBox(self.screen, w / 2 - 150, 155, 280, 50, (255, 255, 255), self.answer1)
         self.answerBox2 = self.drawTextBox(self.screen, w / 2 + 150, 155, 280, 50, (255, 255, 255), self.answer2)
-        self.answerBox3 = self.drawTextBox(self.screen, w / 2 - 150, 220, 280, 50, (255, 255, 255), self.answer3)
-        self.answerBox4 = self.drawTextBox(self.screen, w / 2 + 150, 220, 280, 50, (255, 255, 255), self.answer4)
+        
+        #If there was only one wrong answer passed dont show the other two answers
+        if len(self.allAnswers) < 3:
+            pass
+        else:
+            self.answerBox3 = self.drawTextBox(self.screen, w / 2 - 150, 220, 280, 50, (255, 255, 255), self.answer3)
+        if len(self.allAnswers) < 4:
+            pass
+        else:
+            self.answerBox4 = self.drawTextBox(self.screen, w / 2 + 150, 220, 280, 50, (255, 255, 255), self.answer4)
         #self.isClicked()
         
     #isClicked() return whether or not the mousebutton is down right now
