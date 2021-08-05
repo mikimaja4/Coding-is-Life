@@ -86,8 +86,7 @@ def main():
     pythonEnemies.append(
         entity.Entity(screen.get_width() - 200, screen.get_height(), 6, 4, "assets/enemies/Ghost/Idle.png", 10,#
                       "assets/enemies/Ghost/Moving.png", 10, "assets/enemies/Ghost/Hit.png", 5))
-    # Create a new question class rather than using an array
-    levelQuestions = getLevelQuestions(screen, level)
+
 
     # Need to load each background into this array
     pythonBackgrounds = [
@@ -148,8 +147,10 @@ def main():
             options(screen, background)
         elif scene == "pythonGame":
             pythonGame(screen, background, player, pythonEnemies)
+            levelQuestions = getLevelQuestions(screen, level)
         elif scene == "javaGame":
             javaGame(screen, background, javaEnemies)
+            levelQuestions = getLevelQuestions(screen, level)
         elif scene == "battle":
             # Call battle() using the list of language and level dependent backgrounds and enemies
             if language == "python":
