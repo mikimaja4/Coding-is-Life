@@ -1,4 +1,4 @@
-import os, pygame, arcade, spritesheet, entity, button, dropDown, question, questionList, health
+import os, pygame, arcade, spritesheet, entity, button, dropDown, question, questionList, health, csv
 from pygame.locals import *
 # from tkinter import *
 # import pyrebase
@@ -87,24 +87,7 @@ def main():
         entity.Entity(screen.get_width() - 200, screen.get_height(), 6, 4, "assets/enemies/Ghost/Idle.png", 10,#
                       "assets/enemies/Ghost/Moving.png", 10, "assets/enemies/Ghost/Hit.png", 5))
     # Create a new question class rather than using an array
-    pythonQuestions = []
-    pythonQuestions.append(question.Question(screen, 'What is the value of x after the following statements?\nx = 10\ny=2\nx = x + y','12', ['10','2','102']))
-    pythonQuestions.append(question.Question(screen, 'What is the value of sum after the following statements?\nx = 10\nsum = x + 20','30', ['10','20']))
-    pythonQuestions.append(question.Question(screen, 'A variable can hold more than one value.\nTrue or False?','False', ['True']))
-    pythonQuestions.append(question.Question(screen, 'Which of the following variables holds a string?','x = \'python\'', ['z = w','w = True','y = 7.29']))
-    pythonQuestions.append(question.Question(screen, 'Which of the following variable names (identifiers) is invalid?','9lives', ['_cat4','meowtime','number_of_kittens']))
-    pythonQuestions.append(question.Question(screen, 'Is x + y = 2 + 5 a valid assignment statement?','Invalid', ['Valid']))
-    pythonQuestions.append(question.Question(screen, 'Which of the following is an invalid assignment statement?','x + 3 = 10',['x = 4','x = y','x = y + 4']))
-    pythonQuestions.append(question.Question(screen, 'Which of the following is not a numeric data type?','boolean',['int','float','long']))
-    pythonQuestions.append(question.Question(screen, 'Given the following assignments, which of the following is a valid operation?\ntext = \'some words\'\nletter = \'c\'\nnumber = 27\ndigits = 9000',
-                                             'number + digits',['text + letter','number + text','letter + digits']))
-    pythonQuestions.append(question.Question(screen, 'What will be the output after following statements?\nx = \'Hello\'\ny = \'world!\'\nprint(x, y)','Hello world!', ['Helloworld!','Hello,world!','Hello, world!']))
-    #Convert pythonQuestions from a list to a questionList object
-    pythonQuestions = questionList.QuestionList(pythonQuestions)
-    
-    #Shuffle the list so that they don't show up in the same order
-    pythonQuestions.shuffle()
-    #question.Question(screen, question,answer, [wrong,wrong,wrong])
+    levelQuestions = getLevelQuestions(screen, level)
 
     # Need to load each background into this array
     pythonBackgrounds = [
@@ -171,7 +154,7 @@ def main():
             # Call battle() using the list of language and level dependent backgrounds and enemies
             if language == "python":
                 # Might need to use the returned values from battle when dealing with hp, not sure atm
-                battleReturn = battle(screen, level, player, pythonEnemies, pythonQuestions, pythonBackgrounds)
+                battleReturn = battle(screen, level, player, pythonEnemies, levelQuestions, pythonBackgrounds)
         elif scene == "pause":
             pause(screen)
         elif scene == "gameOver":
@@ -182,7 +165,29 @@ def main():
         # Manage the fps and update the screen
         pygame.display.update()
         clock.tick(fps)
-        
+
+
+def getLevelQuestions(screen, level):
+    level += 1
+    levelQuestions = []
+    # Read in questions for CSV file for corresponding level
+    filename = language + 'Level' + str(level) + '.csv'
+    with open(filename, "r") as fh:
+        reader = csv.reader(fh)
+        questions = list(reader)
+        for problem in questions:
+            q = problem[0]
+            a = problem[1]
+            incorrectChoices = problem[2:]
+            levelQuestions.append(question.Question(screen, q, a, incorrectChoices))
+    # Convert levelQuestions from a list to a questionList object
+    levelQuestions = questionList.QuestionList(levelQuestions)
+    # Shuffle the list so that they don't show up in the same order
+    levelQuestions.shuffle()
+    # Return list of questions for level as list of string, string, list of strings
+    return levelQuestions
+
+
 # Use pygame.mixer to play the input sound. **USE .wav**
 def play(filename, volume):
     pygame.mixer.music.load(filename)
