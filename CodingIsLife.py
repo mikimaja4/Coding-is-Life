@@ -613,7 +613,7 @@ def pythonGame(screen, background, player, pythonEnemies):
     background = pygame.transform.scale(background, (w, h))
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
-#
+
     font = pygame.font.SysFont(None, 30)
     titleFont = pygame.font.SysFont(None, 50)
 
