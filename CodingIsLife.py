@@ -25,6 +25,7 @@ from screeninfo import get_monitors
 # db = firebase.database()
 # auth = firebase.auth()
 # storage = firebase.storage()
+import slider
 
 monitors = get_monitors()  # Get the resolution of all of the users monitors
 w = monitors[0].width  # Get width of first monitor found
@@ -527,7 +528,7 @@ def start(screen, background):
 
 
 def options(screen, background):
-    global scene
+    global scene, volume
     screen = pygame.display.set_mode([1280, 720])
     w, h = pygame.display.get_surface().get_size()
     background = pygame.image.load('menuBackground.png')
@@ -585,6 +586,7 @@ def options(screen, background):
                 for s in slides:
                     s.hit = False
                     return False
+
 
         # Move slides
         for s in slides:
@@ -1033,7 +1035,7 @@ class Slider():
 
 if __name__ == '__main__':
     # GLOBAL VARIABLES
-    global scene, language, level, fps, count
+    global scene, language, level, fps, count, volume
     # Which scene the user is on
     scene = "mainMenu"
     # Which language is being practiced, irrelevant if in a menu
@@ -1044,6 +1046,8 @@ if __name__ == '__main__':
     fps = 120
     # number of frames elapsed
     count = 0
+
+    volume=[50]
 
     main()
     quit()
