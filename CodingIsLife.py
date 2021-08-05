@@ -518,107 +518,80 @@ def start(screen, background):
 
 def options(screen, background):
     global scene
+    screen = pygame.display.set_mode([1280, 720])
     w, h = pygame.display.get_surface().get_size()
     background = pygame.image.load('menuBackground.png')
     background = pygame.transform.scale(background, (w, h))
     fullscreen = False
     font = pygame.font.SysFont(None, 30)
     titleFont = pygame.font.SysFont(None, 50)
-    maxi = 100  # maximum at slider position right
-    mini = 0
-    val= 0
-    offset=[0,0]
- #
+
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
 
-    draw_text('Options', titleFont, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 - 80)
-    draw_text('Music', font, (255, 255, 255), screen, screen.get_width() / 2 - 120, screen.get_height() / 2 )
-    draw_text('Sound Fx', font, (255, 255, 255), screen, screen.get_width() / 2 - 135, screen.get_height() / 2 +60)
+    #draw_text('Options', titleFont, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 - 80)
+    #draw_text('Music', font, (255, 255, 255), screen, screen.get_width() / 2 - 120, screen.get_height() / 2 )
+    #draw_text('Sound Fx', font, (255, 255, 255), screen, screen.get_width() / 2 - 135, screen.get_height() / 2 +60)
     draw_text('Back', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 120)
 
     mx, my = pygame.mouse.get_pos()
     backButton = pygame.Rect(0, 0, 50, 30)
     backButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 120)
 
-    # TODO fix the slider so it shows on the game background
-    # slider test begin
-    # font = pygame.font.SysFont("Verdana", 12)
-
-    WHITE = (255, 255, 255)
-    BLACK = (0, 0, 0)
-    RED = (255, 50, 50)
-    YELLOW = (255, 255, 0)
-    GREEN = (42, 168, 80)
-    DARKGREEN = (28, 138, 61)
-    BLUE = (50, 50, 255)
-    GREY = (200, 200, 200)
-    ORANGE = (200, 100, 50)
-    CYAN = (0, 255, 255)
-    MAGENTA = (255, 0, 255)
-    TRANS = (1, 1, 1)
     clock = pygame.time.Clock()
 
+    musicVolume = Slider("Music Volume", 3.14, 6, 0.3, 650)
+    slides = [musicVolume]
+    speed = Slider("Speed", 50, 150, 10, 775)
+
     num = 0
-    #For Music volume
-    pygame.draw.rect(screen, WHITE, [screen.get_width() / 2 - 70, screen.get_height() / 2 - 15, 150, 30], 2)
-    pygame.draw.rect(screen, WHITE, [screen.get_width() / 2 - 58, screen.get_height() / 2 - 3, 125, 5], 0)
-    musicVolumeButton = pygame.draw.circle(screen, BLACK, (screen.get_width() / 2 - 58, screen.get_height() / 2 - 1), 7, 0)
+    draw_text('Options', titleFont, (255, 255, 255), screen, screen.get_width() / 2,
+                           screen.get_height() / 2 - 80)
+    #draw_text('Music', font, (255, 255, 255), screen, screen.get_width() / 2 - 120,
+                        #   screen.get_height() / 2)
+    #draw_text('Sound Fx', font, (255, 255, 255), screen, screen.get_width() / 2 - 135,
+                        #   screen.get_height() / 2 + 60)
+    draw_text('Back', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 120)
 
-    #For FX Volume
-    pygame.draw.rect(screen, WHITE, [screen.get_width() / 2 - 70, screen.get_height() / 2 +45, 150, 30], 2)
-    pygame.draw.rect(screen, WHITE, [screen.get_width() / 2 - 58, screen.get_height() / 2 + 57, 125, 5], 0)
-    fxVolumeButton = pygame.draw.circle(screen, BLACK, (screen.get_width() / 2 - 58, screen.get_height() / 2 + 59), 7, 0)
+    mx, my = pygame.mouse.get_pos()
+    backButton = pygame.Rect(0, 0, 50, 30)
+    backButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 120)
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+                for s in slides:
+                    if s.button_rect.collidepoint(pos):
+                        s.hit = True
+                if event.button ==1:
+                    if backButton.collidepoint(mx,my):
+                        play('buttonClick.wav', 0.5)
+                        scene = "mainMenu"
+                        return True
+            elif event.type == pygame.MOUSEBUTTONUP:
+                for s in slides:
+                    s.hit = False
+                    return False
 
-    # dynamic graphics - button surface #
-    button_surf = pygame.surface.Surface((20, 20))
-    button_surf.fill(TRANS)
-    button_surf.set_colorkey(TRANS)
-    pygame.draw.circle(button_surf, BLACK, (10, 10), 5, 0)
-    #pygame.draw.circle(button_surf, DARKGREEN, (10, 10), 4, 0)
+        # Move slides
+        for s in slides:
+            if s.hit:
+                s.move()
 
-    surf = screen.copy()
+        # Update screen
+        # screen.fill(BLACK)
+        num += 2
 
-    # dynamic
-    pos = (10 + int((val - mini) / (maxi - mini) * 80), 33)
-    button_rect = button_surf.get_rect(center=pos)
-    surf.blit(button_surf, button_rect)
-    button_rect.move_ip(mx, my)  # move of button box to correct screen position
+        for s in slides:
+            s.draw()
 
-    loc=[mx, my]
-    clicked= False
-    hit = True
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            quit()
-        if event.type == KEYDOWN:
-            if event.key == K_ESCAPE:
-                quit()
-        if event.type == MOUSEBUTTONDOWN:
-            pos = pygame.mouse.get_pos()
-            if event.button == 1:
-                if backButton.collidepoint((mx, my)):
-                    play('buttonClick.wav', 0.5)
-                    scene = "mainMenu"
-                    return True
-                if musicVolumeButton.collidepoint((mx,my)):
-                    clicked = True
-                    while clicked == True:
-                        musicVolumeButton = pygame.draw.circle(screen, BLACK, (mx,my), 7, 0)
-                    #musicVolumeButton = pygame.draw.circle(screen, BLACK, (loc[0] + offset [0], loc[1] + offset[1]), 7, 0)
-                    #musicVolumeButton.move((loc[0], loc[1] ))
-                elif event.type == pygame.MOUSEBUTTONUP:
-                    clicked = False
-                        #print(mx,my)
-                if fxVolumeButton.collidepoint(mx,my):
-                    pass
-        elif event.type == pygame.MOUSEBUTTONUP:
-            if musicVolumeButton.collidepoint((mx, my)):
-                print("Pressed music")
-                pass
-            if fxVolumeButton.collidepoint(mx, my):
-                print("Pressed fx")
-                pass
+        pygame.display.flip()
+        clock.tick(speed.val)
+
+
 #Todo impliment being able to move the circle and to have it adjust the volume
 
 
@@ -988,29 +961,9 @@ ORANGE = (200, 100, 50)
 CYAN = (0, 255, 255)
 MAGENTA = (255, 0, 255)
 TRANS = (1, 1, 1)
-font = pygame.font.SysFont(None, 12)
+font = pygame.font.SysFont(None, 20)
 flow = False  # controls type of color flow
-
-
-class Gradient():
-    def __init__(self, palette, maximum):
-        self.COLORS = palette
-        self.N = len(self.COLORS)
-        self.SECTION = maximum // (self.N - 1)
-
-    def gradient(self, x):
-        """
-        Returns a smooth color profile with only a single input value.
-        The color scheme is determinated by the list 'self.COLORS'
-        """
-        i = x // self.SECTION
-        fraction = (x % self.SECTION) / self.SECTION
-        c1 = self.COLORS[i % self.N]
-        c2 = self.COLORS[(i+1) % self.N]
-        col = [0, 0, 0]
-        for k in range(3):
-            col[k] = (c2[k] - c1[k]) * fraction + c1[k]
-        return col
+screen = pygame.display.set_mode([1280, 720])
 
 
 class Slider():
@@ -1018,8 +971,8 @@ class Slider():
         self.val = val  # start value
         self.maxi = maxi  # maximum at slider position right
         self.mini = mini  # minimum at slider position left
-        self.xpos = pos  # x-location on screen
-        self.ypos = 550
+        self.xpos = 590 # x-location on screen
+        self.ypos = 350
         self.surf = pygame.surface.Surface((100, 50))
         self.hit = False  # the hit attribute indicates slider movement due to mouse interaction
 
@@ -1028,8 +981,9 @@ class Slider():
 
         # Static graphics - slider background #
         self.surf.fill((42, 168, 80))
+        #white border of the box
         pygame.draw.rect(self.surf, WHITE, [0, 0, 100, 50], 3)
-        pygame.draw.rect(self.surf, DARKGREEN, [10, 10, 80, 15], 0)
+        # white background of the slider bar
         pygame.draw.rect(self.surf, WHITE, [10, 30, 80, 5], 0)
 
         self.surf.blit(self.txt_surf, self.txt_rect)  # this surface never changes
@@ -1043,8 +997,8 @@ class Slider():
 
     def draw(self):
         """ Combination of static and dynamic graphics in a copy of
-    the basic slide surface"""
-        screen = pygame.display.set_mode([1280, 720])
+    the basic slide surface
+    """
         # static
         surf = self.surf.copy()
 
@@ -1055,12 +1009,12 @@ class Slider():
         self.button_rect.move_ip(self.xpos, self.ypos)  # move of button box to correct screen position
 
         # screen
-        screen.blit(surf, (self.xpos, self.ypos))
+        screen.blit(surf, (590,350))
 
     def move(self):
         """
     The dynamic part; reacts to movement of the slider button.
-        """
+    """
         self.val = (pygame.mouse.get_pos()[0] - self.xpos - 10) / 80 * (self.maxi - self.mini) + self.mini
         if self.val < self.mini:
             self.val = self.mini

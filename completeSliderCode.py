@@ -1,8 +1,18 @@
-import pygame, math, sys
-pygame.init()
+import pygame, math, sys, os
 
-X = 900  # screen width
-Y = 600  # screen height
+import CodingIsLife
+
+pygame.init()
+screen = pygame.display.set_mode([1280, 720])
+w, h = pygame.display.get_surface().get_size()
+background = pygame.image.load('menuBackground.png')
+background = pygame.transform.scale(background, (w, h))
+fullscreen = False
+font = pygame.font.SysFont(None, 20)
+titleFont = pygame.font.SysFont(None, 50)
+
+screen.fill((0, 0, 0))
+screen.blit(background, (0, 0))
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -26,8 +36,8 @@ class Slider():
         self.val = val  # start value
         self.maxi = maxi  # maximum at slider position right
         self.mini = mini  # minimum at slider position left
-        self.xpos = pos  # x-location on screen
-        self.ypos = 550
+        self.xpos = 590 # x-location on screen
+        self.ypos = 350
         self.surf = pygame.surface.Surface((100, 50))
         self.hit = False  # the hit attribute indicates slider movement due to mouse interaction
 
@@ -36,8 +46,9 @@ class Slider():
 
         # Static graphics - slider background #
         self.surf.fill((42, 168, 80))
+        #white border of the box
         pygame.draw.rect(self.surf, WHITE, [0, 0, 100, 50], 3)
-        pygame.draw.rect(self.surf, DARKGREEN, [10, 10, 80, 15], 0)
+        # white background of the slider bar
         pygame.draw.rect(self.surf, WHITE, [10, 30, 80, 5], 0)
 
         self.surf.blit(self.txt_surf, self.txt_rect)  # this surface never changes
@@ -63,7 +74,7 @@ class Slider():
         self.button_rect.move_ip(self.xpos, self.ypos)  # move of button box to correct screen position
 
         # screen
-        screen.blit(surf, (self.xpos, self.ypos))
+        screen.blit(surf, (590,350))
 
     def move(self):
         """
@@ -76,24 +87,25 @@ class Slider():
             self.val = self.maxi
 
 
-font = pygame.font.SysFont("Verdana", 12)
-screen = pygame.display.set_mode((X, Y))
+
 clock = pygame.time.Clock()
 
-COLORS = [MAGENTA, RED, YELLOW, GREEN, CYAN, BLUE]
 
 
-pen = Slider("Pen", 10, 15, 1, 25)
-freq = Slider("Freq", 1, 3, 0.2, 150)
-jmp = Slider("Jump", 10, 20, 1, 275)
-size = Slider("Size", 200, 200, 20, 400)
-focus = Slider("Focus", 0, 6, 0, 525)
-phase = Slider("Phase", 3.14, 6, 0.3, 650)
+musicVolume = Slider("Music Volume", 3.14, 6, 0.3, 650)
+slides = [musicVolume]
 speed = Slider("Speed", 50, 150, 10, 775)
-slides = [pen, freq, jmp, size, focus, phase, speed]
+
 
 num = 0
+CodingIsLife.draw_text('Options', titleFont, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 - 80)
+CodingIsLife.draw_text('Music', font, (255, 255, 255), screen, screen.get_width() / 2 - 120, screen.get_height() / 2)
+CodingIsLife.draw_text('Sound Fx', font, (255, 255, 255), screen, screen.get_width() / 2 - 135, screen.get_height() / 2 + 60)
+CodingIsLife.draw_text('Back', font, (255, 255, 255), screen, screen.get_width() / 2, screen.get_height() / 2 + 120)
 
+mx, my = pygame.mouse.get_pos()
+backButton = pygame.Rect(0, 0, 50, 30)
+backButton.center = (screen.get_width() / 2, screen.get_height() / 2 + 120)
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

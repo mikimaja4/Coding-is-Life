@@ -142,3 +142,9 @@ while True:
 
     pygame.display.flip()
     clock.tick(speed.val)
+
+
+self.xpos = screen.get_width() / 2 - 78  # x-location on screen
+        self.ypos = screen.get_height() / 2 -25
+        self.xpos2 = screen.get_width() / 2 - 78  # x-location on screen
+        self.ypos2 = screen.get_height() / 2 +40
