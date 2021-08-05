@@ -56,7 +56,7 @@ class Entity():
         if(self.moveSpeed > 0 and self.x > self.targetX):
             self.move(self.x - (self.startX - self.targetX)/(fps * self.moveSpeed), self.y)
         self.count += (1 * speed)
-#move  pixels per second
+        #return pygame.transform.flip(frame, True, False)
         return frame
         
     def move(self, newX, newY):

@@ -57,36 +57,35 @@ def main():
     # Create the enemy entity objects
     pythonEnemies = []
     pythonEnemies.append(
-        entity.Entity(screen.get_width() - 200, screen.get_height(), 6, 10, "assets/enemies/Mushroom/Idle.png", 14,#
+        entity.Entity(screen.get_width() - 200, screen.get_height(), 4, 25, "assets/enemies/Mushroom/Idle.png", 14,#
                       "assets/enemies/Mushroom/Moving.png", 16, "assets/enemies/Mushroom/Hit.png", 5))
     pythonEnemies.append(
-        entity.Entity(screen.get_width() - 200, screen.get_height(), 6, 10, "assets/enemies/Radish/Idle.png", 6,#
+        entity.Entity(screen.get_width() - 200, screen.get_height() - 20, 4, 20, "assets/enemies/Radish/Idle.png", 6,#
                       "assets/enemies/Radish/Moving.png", 12, "assets/enemies/Radish/Hit.png", 5))
     pythonEnemies.append(
-        entity.Entity(screen.get_width() - 200, screen.get_height(), 6, 10, "assets/enemies/Rocks/Idle.png", 14,#
-                      "assets/enemies/Rocks/Moving.png", 14, "assets/enemies/Rocks/Hit.png", 5))
+        entity.Entity(screen.get_width() - 200, screen.get_height() + 7, 5, 18, "assets/enemies/Snail/Idle.png", 15,#
+                      "assets/enemies/Snail/Moving.png", 10, "assets/enemies/Snail/Hit.png", 5))
     pythonEnemies.append(
-        entity.Entity(screen.get_width() - 200, screen.get_height(), 6, 10, "assets/enemies/Chicken/Idle.png", 13,#
+        entity.Entity(screen.get_width() - 200, screen.get_height() - 5, 4, 16, "assets/enemies/Chicken/Idle.png", 13,#
                       "assets/enemies/Chicken/Moving.png", 14, "assets/enemies/Chicken/Hit.png", 5))
     pythonEnemies.append(
-        entity.Entity(screen.get_width() - 200, screen.get_height(), 6, 10, "assets/enemies/Duck/Idle.png", 10,#
+        entity.Entity(screen.get_width() - 200, screen.get_height() - 7, 4, 14, "assets/enemies/Duck/Idle.png", 10,#
                       "assets/enemies/Duck/Moving.png", 10, "assets/enemies/Duck/Hit.png", 5))
     pythonEnemies.append(
-        entity.Entity(screen.get_width() - 200, screen.get_height(), 6, 10, "assets/enemies/Rino/Idle.png", 11,#
+        entity.Entity(screen.get_width() - 200, screen.get_height() - 3, 6, 12, "assets/enemies/Rino/Idle.png", 11,#
                       "assets/enemies/Rino/Moving.png", 6, "assets/enemies/Rino/Hit.png", 5))
     pythonEnemies.append(
         entity.Entity(screen.get_width() - 200, screen.get_height(), 6, 10, "assets/enemies/Slime/Idle.png", 10,#
                       "assets/enemies/Slime/Moving.png", 10, "assets/enemies/Slime/Hit.png", 5))
     pythonEnemies.append(
-        entity.Entity(screen.get_width() - 200, screen.get_height(), 6, 10, "assets/enemies/AngryPig/Idle.png", 9,#
+        entity.Entity(screen.get_width() - 200, screen.get_height(), 6, 8, "assets/enemies/AngryPig/Idle.png", 9,#
                       "assets/enemies/AngryPig/Moving.png", 16, "assets/enemies/AngryPig/Hit.png", 5))
     pythonEnemies.append(
-        entity.Entity(screen.get_width() - 200, screen.get_height(), 6, 10, "assets/enemies/Skull/Idle.png", 8,
+        entity.Entity(screen.get_width() - 200, screen.get_height(), 6, 6, "assets/enemies/Skull/Idle.png", 8,
                       "assets/enemies/Skull/Moving.png", 8, "assets/enemies/Skull/Hit.png", 5))
     pythonEnemies.append(
-        entity.Entity(screen.get_width() - 200, screen.get_height(), 6, 10, "assets/enemies/Ghost/Idle.png", 10,#
+        entity.Entity(screen.get_width() - 200, screen.get_height(), 6, 4, "assets/enemies/Ghost/Idle.png", 10,#
                       "assets/enemies/Ghost/Moving.png", 10, "assets/enemies/Ghost/Hit.png", 5))
-    
     # Create a new question class rather than using an array
     pythonQuestions = []
     pythonQuestions.append(question.Question(screen, 'What is the value of x after the following statements?\nx = 10\ny=2\nx = x + y','12', ['10','2','102']))
@@ -868,8 +867,6 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
     screen.blit(player.display(screen, .2, phase, fps), (player.x, player.y - player.scale * player.h - 30))
     screen.blit(enemyList[level].display(screen, .3, phase, fps),
                 (enemyList[level].x, enemyList[level].y - enemyList[level].scale * enemyList[level].h - 30))
-
-    draw_text(str(player.health), questionFont, (0,0,0), screen, w/2, h/2)
 
     # Return the updated player and enemy so that any of the changes made this frame will maintain
     return (player, enemyList)
