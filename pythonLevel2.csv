@@ -1,0 +1,10 @@
+﻿Which of the following components does not make up an expression?,statement,variable,operator,value
+What is the syntax for the modulus operator?,%,*,+,-
+What does 5 % 2 == 0 return?,False ,True ,,
+Which of the following is an operand in the expression x = 2 * y,y,x,=,*
+"Given the following statements, what will be the output?   phrase = 'Tom ate an entire'   word = 'pizza'   blank = 'taco'   food = 'sandwich'   print(phrase + word)",Tom ate an entirepizza,Tom ate an entire pizza,Tom ate an entire + pizza,Tom ate an entire sandwich
+Variables of different data types can be used in the same expression with an operator. True or False?,False ,True ,,
+What is a single = symbol used for?,assignment,comment,declaration,operation
+Which of the following is not a type of expression?,statement,literal,arithmetic,function call
+Which of the following is an arithmetic operator?,all of the above,/,**,//
+Which of the following is a comparison operator?,all of the above,==,<=,!=
