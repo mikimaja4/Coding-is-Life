@@ -173,14 +173,18 @@ def getLevelQuestions(screen, level):
     levelQuestions = []
     # Read in questions for CSV file for corresponding level
     filename = language + 'Level' + str(level) + '.csv'
-    with open(filename, "r") as fh:
-        reader = csv.reader(fh)
-        questions = list(reader)
-        for problem in questions:
-            q = problem[0]
-            a = problem[1]
-            incorrectChoices = problem[2:]
-            levelQuestions.append(question.Question(screen, q, a, incorrectChoices))
+    try:
+        with open(filename, "r") as fh:
+            reader = csv.reader(fh)
+            questions = list(reader)
+            for problem in questions:
+                levelQuestions.append(question.Question(screen, problem[0], problem[1], problem[2:]))
+    except FileNotFoundError:
+        with open(language + 'Level1.csv', "r") as fh:
+            reader = csv.reader(fh)
+            questions = list(reader)
+            for problem in questions:
+                levelQuestions.append(question.Question(screen, problem[0], problem[1], problem[2:]))
     # Convert levelQuestions from a list to a questionList object
     levelQuestions = questionList.QuestionList(levelQuestions)
     # Shuffle the list so that they don't show up in the same order
