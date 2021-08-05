@@ -831,6 +831,7 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
                     #If the answer is correct flash green on the box clicked on and hurt the enemy
                     print(enemyList[level].health)
                     enemyList[level].takeDamage(10)
+                    enemyList[level].state = "hit"
                     print(enemyList[level].health)
                     #If the enemies runs out of hp switch to the you win scene
                     if enemyList[level].health <= 0:
@@ -842,6 +843,7 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
                     #If its wrong flash red and hurt the player
                     print(player.health)
                     player.takeDamage(10)
+                    player.state = "hit"
                     #
                     print(player.health)
                     #If the player runs out of hp switch to the game over scene
@@ -858,14 +860,11 @@ def battle(screen, level, player, enemyList, questionList, backgroundList):
     #If the enemy is close enough to the player deal damage every second
     if enemyList[level].x <= enemyList[level].targetX and count%fps == 0:
         player.takeDamage(1)
-    #####TEST CODE TO SHOW ANIMATIONS####
-    phases = ["idle", "moving", "hit"]
-    phase = phases[int(count / 250 % 3)]
-    ######################################
+        player.state = "hit"
 
     # Display both sprites on the screen
-    screen.blit(player.display(screen, .2, phase, fps), (player.x, player.y - player.scale * player.h - 30))
-    screen.blit(enemyList[level].display(screen, .3, phase, fps),
+    screen.blit(player.display(screen, .2, player.state, fps), (player.x, player.y - player.scale * player.h - 30))
+    screen.blit(enemyList[level].display(screen, .3, enemyList[level].state, fps),
                 (enemyList[level].x, enemyList[level].y - enemyList[level].scale * enemyList[level].h - 30))
 
     # Return the updated player and enemy so that any of the changes made this frame will maintain

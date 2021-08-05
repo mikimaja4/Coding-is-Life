@@ -101,7 +101,7 @@ class Question:
         #Width and height of the game window
         w, h = pygame.display.get_surface().get_size()
         #Draw the box with the question
-        self.drawTextBox(screen, w / 2, 70, 500, 100, (255, 255, 255), self.question)
+        self.drawTextBox(screen, w / 2, 70, 550, 100, (255, 255, 255), self.question)
         #Draw the 4 available options
         self.answerBox1 = self.drawTextBox(self.screen, w / 2 - 150, 155, 280, 50, (255, 255, 255), self.answer1)
         self.answerBox2 = self.drawTextBox(self.screen, w / 2 + 150, 155, 280, 50, (255, 255, 255), self.answer2)

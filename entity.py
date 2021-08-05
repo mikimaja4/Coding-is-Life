@@ -13,6 +13,8 @@ class Entity():
         self.hitFrames = hitFrames
         
         self.count = 0
+        #How many frames the entity has been in their hit animation for
+        self.hitCounter = 0
         #Which state the sprite is in. Either idle, moving, or hit
         self.state = "idle"
         #What state the entity was in last frame
@@ -38,14 +40,25 @@ class Entity():
 
 
     def display(self, screen, speed, state, fps):
+        w, h = pygame.display.get_surface().get_size()
         self.updateSize()
-        self.state = state
         #Check if the state changed since last frame
-        if(self.state != self.prevState):
+        if(state != self.prevState):
+            #If it did reset count to 0 so we dont miss and vital frame
             self.count = 0
         self.prevState = self.state
-        #If it did reset count to 0 so we dont miss and vital frames
-        w, h = pygame.display.get_surface().get_size()
+        self.state = state
+        #If the entity has been hit but hasnt finished their hit animation stay hit
+        if(self.hitCounter < self.hitFrames and self.prevState == "hit"):
+            self.state = "hit"
+        #If theyre at their target switch them to idle
+        elif (self.x <= self.targetX):
+            self.state = "idle"
+            self.hitCounter = 0
+        #If theyre not at their target switch them to moving
+        elif (self.x > self.targetX):
+            self.state = "moving"
+            self.hitCounter = 0
         if self.state == "idle":
             frame = self.idle.getImage(int(self.count) % self.idleFrames, self.idleFrames, self.scale)
             #(self.count * speed) % self.idleFrames
@@ -53,6 +66,7 @@ class Entity():
             frame = self.moving.getImage(int(self.count) % self.movingFrames, self.movingFrames, self.scale)
         elif self.state == "hit":
             frame = self.hit.getImage(int(self.count) % self.hitFrames, self.hitFrames, self.scale)
+            self.hitCounter += (1 * speed)
         if(self.moveSpeed > 0 and self.x > self.targetX):
             self.move(self.x - (self.startX - self.targetX)/(fps * self.moveSpeed), self.y)
         self.count += (1 * speed)
