@@ -1,5 +1,4 @@
-﻿QUESTION,CORRECT ANSWER,A,B,C
-What is the value of x after the following statements?\nx = 10\ny = 2\nx = x + y,12,10,2,102
+﻿What is the value of x after the following statements?\nx = 10\ny = 2\nx = x + y,12,10,2,102
 What is the value of sum after the following statements?\nx = 10\nsum = x + 20,30,10,20,
 A variable can hold more than one value.\nTrue or False?,False ,True ,,
 Which of the following variables holds a string?,x = 'python',z = w,w = True,y = 7.29
