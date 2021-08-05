@@ -202,10 +202,12 @@ def play(filename, volume):
 
 
 def draw_text(text, font, color, surface, x, y):
-    textobj = font.render(text, 1, color)
-    textrect = textobj.get_rect()
-    textrect.center = (x, y)
-    surface.blit(textobj, textrect)
+    lines = text.split('   ')
+    for line in lines:
+        textobj = font.render(line, 1, color)
+        textrect = textobj.get_rect()
+        textrect.center = (x, y)
+        surface.blit(textobj, textrect)
 
 # Draw a box with rounded edges centered at x,y
 def drawTextBox(surface, x, y, width, height, text=''):

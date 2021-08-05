@@ -71,10 +71,15 @@ class Question:
         return (boxRect, text)
     
     def draw_text(self, text, font, color, surface, x, y):
-        textobj = font.render(text, 1, color)
-        textrect = textobj.get_rect()
-        textrect.center = (x, y)
-        surface.blit(textobj, textrect)
+        lines = text.split('   ')
+        spacing = 13
+        for line in lines:
+            if len(lines) > 1:
+                y += spacing
+            textobj = font.render(line, 1, color)
+            textrect = textobj.get_rect()
+            textrect.center = (x, y)
+            surface.blit(textobj, textrect)
     
     #Will return a random answer and then remove it from the pool of choices
     def chooseRandom():
