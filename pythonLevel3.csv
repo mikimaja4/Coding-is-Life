@@ -1,0 +1,11 @@
+﻿What data type can be of values True and False?,boolean,int,string,byte
+What is the order of operations for boolean operators?,"negation, and, or","and, or, negation","or, and, negation","negation, or, and"
+Which of the following is not part of an if-else structure?,elseif,if,else,elif
+What would 2 == 2 and True return?,True,False,2,Error
+Which of the following would return True?,2 - 4 < 0,2*2 != 4,4 <= 3 or 2**3 != 8,0 <= 1 and 3 >= 4
+Which of the following is the correct structure of an if-else block?,if __: elif __: elif __: else: ,if __: else: elif __: ,elif __: else __:
+Which of the following returns False?,4 % 2 == 0 and 4 % 2 == 1,2**4 >= 8,if 10 == 2 * 5: return True
+Which of the following is not a boolean operator?,if,not,and,or
+Select the inaccurate logical connective.,False and False is True,True and True is True,True and False is False,False and True is False
+Select the inaccurate logical connective.,False or False is True,True or True is True,True or False is True,False or True is True
+Select the inaccurate logical connective.,Not not False is True,Not True is False,Not False is True
